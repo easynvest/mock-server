@@ -1,3 +1,4 @@
 module.exports = {
-  '/api/*': '/$1'
+  '/api/*': '/$1',
+  '/WebServices/HB/Autenticacao.asmx': '/request1'
 }

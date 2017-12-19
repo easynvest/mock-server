@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "pm2 start ecosystem.config.js",
     "dev": "pm2 start ecosystem.config.js --no-daemon && pm2 kill",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -7,10 +7,10 @@ const customRoutes = require('./routes')
 const rules = require('./rewriteRoutes')
 
 const server = jsonServer.create()
-const router = jsonServer.router(resources())
+const router = jsonServer.router(resources)
 const middlewares = jsonServer.defaults()
 
-server.locals.requestApi = true
+server.locals.requestApi = false
 
 // Rewrite routes
 server.use(jsonServer.rewriter(rules))
@@ -21,7 +21,7 @@ server.use(jsonServer.bodyParser)
 server.use(bodyParser.text({ type: '*/xml' }))
 
 // Custom middlewares
-customMiddlewares(server)
+customMiddlewares(server, router)
 
 // Custom routes
 customRoutes({ server, router })
