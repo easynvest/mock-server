@@ -6,26 +6,28 @@ module.exports = (server, router) => async (req, res, next) => {
   const routes = require('../rewriteRoutes')
 
   const resource = routes[parsedUrl.pathname]
-  
+
   if (server.locals.requestApi) {
     next()
     return
   }
-  
-  if(!resource) {
+
+  if (!resource) {
     next()
     return
   }
 
   const result = router.db.get(resource.replace('/', '')).value()
 
-  if(result.type === 'xml') {
-    res.set('Content-Type', 'text/xml')
-    res.send(result.content)
-    return
-  }else {
-    res.status(200).json(result)
-    return
+  if (result) {
+    if (result.type === 'xml') {
+      res.set('Content-Type', 'text/xml')
+      res.send(result.content)
+      return
+    } else {
+      res.status(200).json(result)
+      return
+    }
   }
 
   next()
