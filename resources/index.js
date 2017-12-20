@@ -3,7 +3,7 @@ const normalizedPath = require("path").join(__dirname, './')
 const exportResources = {}
 
 require('fs').readdirSync(normalizedPath).forEach(function (file) {
-  if (file === 'index.js') {
+  if (['index.js', '.gitignore'].includes(file) ) {
     return
   }
 
