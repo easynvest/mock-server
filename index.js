@@ -10,7 +10,7 @@ const server = jsonServer.create()
 const router = jsonServer.router(resources)
 const middlewares = jsonServer.defaults()
 
-server.locals.requestApi = false
+server.locals.requestApi = true
 
 // Rewrite routes
 server.use(jsonServer.rewriter(rules))

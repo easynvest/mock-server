@@ -3,7 +3,6 @@ const fetch = require('node-fetch')
 const url = require('url')
 const fs = require('fs')
 const routes = require('../rewriteRoutes')
-const FormData = require('form-data')
 
 const URI_API = process.env.API_URI
 
@@ -17,8 +16,8 @@ const toFile = (file, content) => {
 module.exports = server => async (req, res, next) => {
   const parsedUrl = url.parse(req.originalUrl)
   const method = req.method
-  const uri = `http://${URI_API}${parsedUrl.pathname}`
-  const existRoute = routes[parsedUrl.pathname]
+  const uri = `http://${URI_API}${parsedUrl.path}`
+  const existRoute = routes[parsedUrl.path]
 
   if (parsedUrl.pathname === '/request-api') {
     next()
@@ -52,20 +51,12 @@ module.exports = server => async (req, res, next) => {
       method,
       body: reqBody,
       headers: {
+        authorization,
         'content-type': contentType
       }
     }
 
-    console.log(config)
     const request = await fetch(uri, config)
-
-    let body
-    try {
-      body = await request.clone().json()
-    } catch (err) {
-      body = await request.clone().text()
-    }
-    console.log(body)
 
     if (!server.locals.requestApi || [200, 400, 204].indexOf(request.status) === -1) {
       res.append('x-request-mock', 'true')
@@ -73,27 +64,34 @@ module.exports = server => async (req, res, next) => {
       return
     }
 
-    let fileName = parsedUrl.pathname.replace(/[^a-zA-Z0-9-]/g, '')
+    let fileName = parsedUrl.path.replace(/[^a-zA-Z0-9-]/g, '')
     if (existRoute) {
       fileName = existRoute.replace('/', '')
     } else {
-      routes[parsedUrl.pathname] = `/${fileName}`
+      routes[parsedUrl.path] = `/${fileName}`
 
       toFile(`${__dirname}/../rewriteRoutes.js`, JSON.stringify(routes, null, 2).replace(/'/g, '`').replace(/"/g, "'"))
     }
 
-    let content = ''
+    let closeFile = '\n'
+    const fileStream = fs.createWriteStream(`./resources/${fileName}.js`, { encoding: 'utf-8' });
+    fileStream.write('module.exports = ');
+
+    res.set('Content-Type', 'application/json')
+
     if (request.headers.get('content-type').includes('xml')) {
-      content = JSON.stringify({ type: 'xml', content: body }, null, 2).replace(/"(.+)":/gi, '$1:').replace(/'/g, '`').replace(/"/g, "'")
-    } else {
-      content = JSON.stringify(body, null, 2).replace(/"(.+)":/gi, '$1:').replace(/'/g, '`').replace(/"/g, "'")
+      res.set('Content-Type', 'application/xml')
+      fileStream.write('{ type: \'xml\', content: \'');
+      closeFile = '\'}\n'
     }
 
-    toFile(`./resources/${fileName}.js`, content)
-
-
-    res.set('Content-Type', request.headers.get('content-type'))
-    res.status(request.status).send(body)
+    res.status(request.status)
+    request.body.pipe(res)
+    request.body.pipe(fileStream, { end: false })
+    
+    request.body.on('end', function () {
+      fileStream.end(closeFile)
+    })
   } catch (e) {
     console.log(e)
     res.status(500).json({ err: 1 })

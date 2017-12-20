@@ -23,6 +23,9 @@ module.exports = (server, router) => async (req, res, next) => {
     res.set('Content-Type', 'text/xml')
     res.send(result.content)
     return
+  }else {
+    res.status(200).json(result)
+    return
   }
 
   next()
