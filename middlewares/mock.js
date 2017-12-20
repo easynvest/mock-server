@@ -64,7 +64,7 @@ module.exports = server => async (req, res, next) => {
       return
     }
 
-    let fileName = parsedUrl.path.replace(/[^a-zA-Z0-9-]/g, '')
+    let fileName = URI_API.concat('-').concat(parsedUrl.path).replace(/[^a-zA-Z0-9-]/g, '')
     if (existRoute) {
       fileName = existRoute.replace('/', '')
     } else {
@@ -74,7 +74,8 @@ module.exports = server => async (req, res, next) => {
     }
 
     let closeFile = '\n'
-    const fileStream = fs.createWriteStream(`./resources/${fileName}.js`, { encoding: 'utf-8' });
+    
+    const fileStream = fs.createWriteStream(`./resources/${URI_API}/${fileName}.js`, { flags: 'w', encoding: 'utf-8' });
     fileStream.write('module.exports = ');
 
     res.set('Content-Type', 'application/json')
