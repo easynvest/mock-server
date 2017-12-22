@@ -64,14 +64,20 @@ program
   .command('start')
   .alias('s')
   .description('Inicia mock-server')
-  .action(() => {
-    let configFile = `${process.cwd()}/mock-server.conf.js`
-    let config = {}
+  .action(mockServerConfigName => {
 
-    if (fs.existsSync(configFile)) {
-      config = require(configFile)
+    if (typeof mockServerConfigName === 'object') {
+      mockServerConfigName = 'mock-server.conf.js'
     }
 
+    let configFile = path.join(process.cwd(), mockServerConfigName)
+
+    if (!fs.existsSync(configFile)) {
+      console.error(`Não foi possivel encontrar o arquivo de configuração:\nArquivo: "${configFile}"`)
+      return
+    }
+
+    const config = require(configFile)
     mockServer(config)
   })
 
