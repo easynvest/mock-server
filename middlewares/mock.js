@@ -2,9 +2,8 @@ const https = require('https')
 const fetch = require('node-fetch')
 const url = require('url')
 const fs = require('fs')
-const routes = require('../rewriteRoutes')
-
-const URI_API = process.env.API_URI
+const path = require('path')
+const { getConfig } = require('../config')
 
 const toFile = (file, content) => {
   fs.writeFile(file, `module.exports = ${content}\n`, 'utf8', err => {
@@ -13,7 +12,12 @@ const toFile = (file, content) => {
   })
 }
 
-module.exports = server => async (req, res, next) => {
+module.exports = ({ server }) => async (req, res, next) => {
+  const { uriApi: URI_API, rewriteRoutes, resourcesPath } = getConfig()
+  const rewriteRoutesPath = path.join(process.cwd(), rewriteRoutes)
+  const resourcesPathLocal = path.join(process.cwd(), resourcesPath)
+
+  const routes = require(rewriteRoutesPath)
   const parsedUrl = url.parse(req.originalUrl)
   const method = req.method
   const uri = `http://${URI_API}${parsedUrl.path}`
@@ -70,12 +74,12 @@ module.exports = server => async (req, res, next) => {
     } else {
       routes[parsedUrl.path] = `/${fileName}`
 
-      toFile(`${__dirname}/../rewriteRoutes.js`, JSON.stringify(routes, null, 2).replace(/'/g, '`').replace(/"/g, "'"))
+      toFile(rewriteRoutesPath, JSON.stringify(routes, null, 2).replace(/'/g, '`').replace(/"/g, "'"))
     }
 
     let closeFile = '\n'
-    
-    const fileStream = fs.createWriteStream(`./resources/${URI_API}/${fileName}.js`, { flags: 'w', encoding: 'utf-8' });
+
+    const fileStream = fs.createWriteStream(`${resourcesPathLocal}/${URI_API}/${fileName}.js`, { flags: 'w', encoding: 'utf-8' });
     fileStream.write('module.exports = ');
 
     res.set('Content-Type', 'application/json')
@@ -89,7 +93,7 @@ module.exports = server => async (req, res, next) => {
     res.status(request.status)
     request.body.pipe(res)
     request.body.pipe(fileStream, { end: false })
-    
+
     request.body.on('end', function () {
       fileStream.end(closeFile)
     })

@@ -1,9 +1,12 @@
 const url = require('url')
+const path = require('path')
+const { getConfig } = require('../config')
 
-module.exports = (server, router) => async (req, res, next) => {
+module.exports = ({ server, router }) => async (req, res, next) => {
+  const { uriApi: URI_API, rewriteRoutes, resourcesPath } = getConfig()
+  const rewriteRoutesPath = path.join(process.cwd(), rewriteRoutes)
+  const routes = require(rewriteRoutesPath)
   const parsedUrl = url.parse(req.originalUrl)
-
-  const routes = require('../rewriteRoutes')
 
   const resource = routes[parsedUrl.pathname]
 
