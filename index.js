@@ -7,7 +7,7 @@ const customRoutes = require('./routes')
 const path = require('path')
 const { setConfig } = require('./config')
 
-module.exports = config => {
+module.exports = (config, cacheOnly) => {
   setConfig(config)
   const { port: PORT = 3000, uriApi: URI_API } = config
   const rules = require(path.join(process.cwd(), config.rewriteRoutes))
@@ -15,8 +15,8 @@ module.exports = config => {
   const router = jsonServer.router(resources(config))
   const middlewares = jsonServer.defaults()
 
-  server.locals.requestApi = true
-
+  server.locals.requestApi = !cacheOnly
+  console.log(server.locals.requestApi)
   // Rewrite routes
   server.use(jsonServer.rewriter(rules))
 

@@ -65,6 +65,7 @@ program
   .alias('s')
   .description('Inicia mock-server')
   .action(mockServerConfigName => {
+    const cacheOnly = program.cacheOnly || false
 
     if (typeof mockServerConfigName === 'object') {
       mockServerConfigName = 'mock-server.conf.js'
@@ -78,9 +79,10 @@ program
     }
 
     const config = require(configFile)
-    mockServer(config)
+    mockServer(config, cacheOnly)
   })
 
 program
   .version('0.1.0')
+  .option('--cache-only', 'Inicia mock sem fazer proxy para api')
   .parse(process.argv);
