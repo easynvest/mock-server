@@ -16,7 +16,6 @@ module.exports = (config, cacheOnly) => {
   const middlewares = jsonServer.defaults()
 
   server.locals.requestApi = !cacheOnly
-  console.log(server.locals.requestApi)
   // Rewrite routes
   server.use(jsonServer.rewriter(rules))
 
