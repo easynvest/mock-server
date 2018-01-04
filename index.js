@@ -16,6 +16,7 @@ module.exports = (config, cacheOnly) => {
 
   server.locals.requestApi = !cacheOnly
   // Rewrite routes
+  // server.use(jsonServer.static('public'));
   server.use(jsonServer.rewriter({
     '/api/*': '/$1'
   }))
