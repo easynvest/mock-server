@@ -8,6 +8,10 @@
     "dev": "pm2 start ecosystem.config.js --no-daemon && pm2 kill",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "preferGlobal": true,
+  "bin": {
+    "mock-server": "./cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/easynvest/mock-server.git"
@@ -21,7 +25,10 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "chalk": "^2.3.0",
+    "commander": "^2.12.2",
     "form-data": "^2.3.1",
+    "fs-extra": "^5.0.0",
+    "inquirer": "^4.0.1",
     "json-server": "^0.12.1",
     "node-fetch": "^1.7.3",
     "pm2": "^2.9.1",
