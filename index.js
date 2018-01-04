@@ -1,7 +1,6 @@
 const bodyParser = require('body-parser')
 const jsonServer = require('json-server')
 const chalk = require('chalk')
-const resources = require('./resources')
 const customMiddlewares = require('./middlewares')
 const customRoutes = require('./routes')
 const path = require('path')
@@ -11,14 +10,15 @@ const dbService = require('./db')
 module.exports = (config, cacheOnly) => {
   setConfig(config)
   const { port: PORT = 3000, uriApi: URI_API } = config
-  const rules = require(path.join(process.cwd(), config.rewriteRoutes))
   const server = jsonServer.create()
-  const router = jsonServer.router(resources(config))
+  const router = jsonServer.router()
   const middlewares = jsonServer.defaults()
 
   server.locals.requestApi = !cacheOnly
   // Rewrite routes
-  server.use(jsonServer.rewriter(rules))
+  server.use(jsonServer.rewriter({
+    '/api/*': '/$1'
+  }))
 
   // Set default middlewares (logger, static, cors and no-cache)
   server.use(middlewares)
