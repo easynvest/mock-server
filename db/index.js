@@ -12,6 +12,6 @@ const db = low(adapter)
 addMixins(db)
 const service = initService(db)
 
-db.defaults({ requests: [], scenaries: [] }).write()
+db.defaults({ requests: [], scenarios: [] }).write()
 
 module.exports = service

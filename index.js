@@ -1,9 +1,9 @@
 const bodyParser = require('body-parser')
 const jsonServer = require('json-server')
 const chalk = require('chalk')
+
 const customMiddlewares = require('./middlewares')
 const customRoutes = require('./routes')
-const path = require('path')
 const { setConfig } = require('./config')
 const dbService = require('./db')
 

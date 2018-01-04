@@ -7,18 +7,18 @@ const { getConfig } = require('../config')
 
 module.exports = ({ server, dbService }) => async (req, res, next) => {
   const { uriApi: URI_API } = getConfig()
-  const parsedUrl = url.parse(req.originalUrl)
+  const parsedUrl = url.parse(req.originalUrl.replace(/^\/proxy/, ''))
   const method = req.method
   const uri = `http://${URI_API}${parsedUrl.path}`
-
-  if (parsedUrl.pathname === '/request-api') {
-    next()
-    return
-  }
+  let mockRequest
 
   if (!server.locals.requestApi) {
     res.append('x-request-mock', 'true')
-    next()
+
+    mockRequest = dbService.onRequests.getTo({ method, url: uri })
+
+    res.status(mockRequest.status)
+    res.send(mockRequest.response)
     return
   }
 
@@ -50,9 +50,9 @@ module.exports = ({ server, dbService }) => async (req, res, next) => {
 
     const request = await fetch(uri, config)
 
-    if (!server.locals.requestApi || [200, 400, 204].indexOf(request.status) === -1) {
+    if ([200, 400, 204].indexOf(request.status) === -1) {
       res.append('x-request-mock', 'true')
-      const mockRequest = dbService.onRequests.getTo({ method, url: uri })
+      mockRequest = dbService.onRequests.getTo({ method, url: uri })
 
       res.status(mockRequest.status)
       res.send(mockRequest.response)

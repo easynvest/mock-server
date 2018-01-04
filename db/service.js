@@ -2,102 +2,102 @@ class ScenariosService {
   constructor(db, mockApplication) {
     this._ = db._
     this.mockApplication = mockApplication
-    this.scenaries = db.get('scenaries')
+    this.scenarios = db.get('scenarios')
   }
 
-  allScenaries() {
-    return this.scenaries.value()
+  allscenarios() {
+    return this.scenarios.value()
   }
 
   activeByName(name) {
-    const scenario = this.scenaries.find({ active: true })
+    const scenario = this.scenarios.find({ active: true })
 
     if (scenario.size().value() === 0) {
       return
     }
 
-    const scenarieRequests = scenario.value().requests
+    const scenarioRequests = scenario.value().requests
 
-    this._.each(scenarieRequests, request => { request.status = 0 })
+    this._.each(scenarioRequests, request => { request.status = 0 })
 
-    scenario.set('active', false).set('requests', scenarieRequests).write()
+    scenario.set('active', false).set('requests', scenarioRequests).write()
 
-    this.scenaries.find({ name }).assign({ active: true }).write()
+    this.scenarios.find({ name }).assign({ active: true }).write()
   }
 
   active(id) {
-    const scenario = this.scenaries.find({ active: true })
+    const scenario = this.scenarios.find({ active: true })
 
     if (scenario.size().value() === 0) {
       return
     }
 
-    const scenarieRequests = scenario.value().requests
+    const scenarioRequests = scenario.value().requests
 
-    this._.each(scenarieRequests, request => { request.status = 0 })
+    this._.each(scenarioRequests, request => { request.status = 0 })
 
-    scenario.set('active', false).set('requests', scenarieRequests).write()
+    scenario.set('active', false).set('requests', scenarioRequests).write()
 
-    this.scenaries.getById(id).assign({ active: true }).write()
+    this.scenarios.getById(id).assign({ active: true }).write()
   }
 
   getNextRequest({ method, url }) {
     const _ = this._
 
-    const scenarie = this.scenaries.find({ active: true })
+    const scenario = this.scenarios.find({ active: true })
 
-    if (scenarie.size().value() === 0) {
+    if (scenario.size().value() === 0) {
       return undefined
     }
 
-    const scenarieRequests = scenarie.value().requests
+    const scenarioRequests = scenario.value().requests
 
-    const verifyRequestActive = _.first(_.orderBy(_.uniq(_.map(scenarieRequests, 'status')))) === 0
+    const verifyRequestActive = _.first(_.orderBy(_.uniq(_.map(scenarioRequests, 'status')))) === 0
 
     if (!verifyRequestActive) {
-      _.each(scenarieRequests, request => { request.status = 0 })
+      _.each(scenarioRequests, request => { request.status = 0 })
 
-      scenarie.set('active', false).set('requests', scenarieRequests).write()
+      scenario.set('active', false).set('requests', scenarioRequests).write()
 
       return undefined
     }
 
-    const nextScenarieRequest = _.find(scenarieRequests, { method, url, status: 0 })
+    const nextScenarioRequest = _.find(scenarioRequests, { method, url, status: 0 })
 
-    if (!nextScenarieRequest) {
+    if (!nextScenarioRequest) {
       return undefined
     }
 
-    const requestId = nextScenarieRequest.requestId
+    const requestId = nextScenarioRequest.requestId
 
-    nextScenarieRequest.status = 1
+    nextScenarioRequest.status = 1
 
     const request = this.mockApplication.onRequests.getById(requestId)
 
-    request.set({ requests: scenarieRequests }).write()
+    request.set({ requests: scenarioRequests }).write()
 
     return request.value()
   }
 
   create({ name, active = false, requests = [] }) {
 
-    const scenarie = this.scenaries
+    const scenario = this.scenarios
       .pushIfNotExists({ name, active, requests }, ['name', 'active', 'requests'])
       .write()
 
-    return scenarie
+    return scenario
   }
 
   addRequest({ id, url, method, requestId }) {
     const newRequest = { url, requestId, method: method.toUpperCase(), status: 0 }
 
-    const scenarie = this.scenaries.getById(id)
-    const requests = scenarie.value().requests
+    const scenario = this.scenarios.getById(id)
+    const requests = scenario.value().requests
     requests.push(newRequest)
 
-    scenarie.set('requests', requests).write()
+    scenario.set('requests', requests).write()
 
-    return scenarie.value()
+    return scenario.value()
   }
 }
 
