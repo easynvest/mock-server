@@ -6,6 +6,7 @@ const customMiddlewares = require('./middlewares')
 const customRoutes = require('./routes')
 const path = require('path')
 const { setConfig } = require('./config')
+const dbService = require('./db')
 
 module.exports = (config, cacheOnly) => {
   setConfig(config)
@@ -25,10 +26,10 @@ module.exports = (config, cacheOnly) => {
   server.use(bodyParser.text({ type: '*/xml' }))
 
   // Custom middlewares
-  customMiddlewares({ server, router })
+  customMiddlewares({ server, router, dbService })
 
   // Custom routes
-  customRoutes({ server, router })
+  customRoutes({ server, router, dbService })
 
   // Use default router
   server.use(router)
@@ -36,7 +37,7 @@ module.exports = (config, cacheOnly) => {
   server.listen(PORT, () => {
     console.log(chalk.bold('Routes Rules:'))
 
-    Object.keys(rules).forEach(key => console.log(`${key} -> ${rules[key]}`))
+    dbService.onRequests.all().forEach(url => console.log(url))
 
     console.log()
     console.log(`JSON Server is running: http://localhost:${PORT}/ point to => ${URI_API}`)
