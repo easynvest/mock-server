@@ -1,27 +1,29 @@
 {
-  "name": "@easynvest-team/mock-server",
+  "name": "@easynvest/mock-server",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "license": "Apache-2.0",
+  "preferGlobal": true,
   "scripts": {
     "start": "pm2 start ecosystem.config.js",
     "dev": "pm2 start ecosystem.config.js --no-daemon && pm2 kill",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "preferGlobal": true,
   "bin": {
     "mock-server": "./cli.js"
   },
+  "keywords": [
+    "mock-api"
+  ],
+  "homepage": "https://github.com/easynvest/mock-server#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/easynvest/mock-server.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/easynvest/mock-server/issues"
   },
-  "homepage": "https://github.com/easynvest/mock-server#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
     "chalk": "^2.3.0",
