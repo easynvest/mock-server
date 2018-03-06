@@ -16,7 +16,7 @@ module.exports = function (db) {
           data = _.pick(data, verifyKeys)
         }
 
-        const valuesItem = _.valuesIn(item)
+        const valuesItem = _.valuesIn(item) 
         const valuesData = _.valuesIn(data)
 
         return _.isEqual(valuesItem, valuesData)
