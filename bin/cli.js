@@ -3,6 +3,7 @@
 const program = require("commander");
 const { prompt } = require("inquirer");
 const fs = require("fs");
+const chalk = require("chalk");
 const path = require("path");
 const debug = require("debug")("easynvest.mock-server:server");
 const http = require("http");
@@ -102,7 +103,12 @@ program
 
     const server = http.createServer(app);
 
-    server.listen(port);
+    server.listen(port, () => {
+      console.log(
+        `JSON Server is running: http://localhost:${port}/ point to => ${config.uriApi}`
+      );
+    });
+
     server.on("error", onError);
     server.on("listening", onListening);
 

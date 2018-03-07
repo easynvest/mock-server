@@ -12,7 +12,6 @@ module.exports = ({ server, dbService }) => async (req, res, next) => {
   const uri = `http://${URI_API}${parsedUrl.path}`
   let mockRequest
 
-  console.log(uri)
   if (!server.locals.requestApi) {
     res.append('x-request-mock', 'true')
 
