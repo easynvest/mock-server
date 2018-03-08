@@ -1,8 +1,6 @@
 let globalConfig = {
   port: '',
-  uriApi: '',
-  rewriteRoutes: '',
-  resourcesPath: ''
+  uriApi: ''
 }
 
 const getConfig = () => globalConfig

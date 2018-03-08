@@ -5,32 +5,20 @@ const fs = require('fs')
 const path = require('path')
 const { getConfig } = require('../config')
 
-const toFile = (file, content) => {
-  fs.writeFile(file, `module.exports = ${content}\n`, 'utf8', err => {
-    if (err) { return 'Error' }
-    console.log(`Rewirte file resource ${file}`)
-  })
-}
-
-module.exports = ({ server }) => async (req, res, next) => {
-  const { uriApi: URI_API, rewriteRoutes, resourcesPath } = getConfig()
-  const rewriteRoutesPath = path.join(process.cwd(), rewriteRoutes)
-  const resourcesPathLocal = path.join(process.cwd(), resourcesPath)
-
-  const routes = require(rewriteRoutesPath)
-  const parsedUrl = url.parse(req.originalUrl)
+module.exports = ({ server, dbService }) => async (req, res, next) => {
+  const { uriApi: URI_API } = getConfig()
+  const parsedUrl = url.parse(req.originalUrl.replace(/^\/proxy/, ''))
   const method = req.method
   const uri = `http://${URI_API}${parsedUrl.path}`
-  const existRoute = routes[parsedUrl.path]
-
-  if (parsedUrl.pathname === '/request-api') {
-    next()
-    return
-  }
+  let mockRequest
 
   if (!server.locals.requestApi) {
     res.append('x-request-mock', 'true')
-    next()
+
+    mockRequest = dbService.onRequests.getTo({ method, url: uri })
+
+    res.status(mockRequest.status)
+    res.send(mockRequest.response)
     return
   }
 
@@ -62,41 +50,23 @@ module.exports = ({ server }) => async (req, res, next) => {
 
     const request = await fetch(uri, config)
 
-    if (!server.locals.requestApi || [200, 400, 204].indexOf(request.status) === -1) {
+    if ([200, 400, 204].indexOf(request.status) === -1) {
       res.append('x-request-mock', 'true')
-      next()
+      mockRequest = dbService.onRequests.getTo({ method, url: uri })
+
+      res.status(mockRequest.status)
+      res.send(mockRequest.response)
       return
     }
 
-    let fileName = URI_API.concat('-').concat(parsedUrl.path).replace(/[^a-zA-Z0-9-]/g, '')
-    if (existRoute) {
-      fileName = existRoute.replace('/', '')
-    } else {
-      routes[parsedUrl.path] = `/${fileName}`
-
-      toFile(rewriteRoutesPath, JSON.stringify(routes, null, 2).replace(/'/g, '`').replace(/"/g, "'"))
-    }
-
-    let closeFile = '\n'
-
-    const fileStream = fs.createWriteStream(`${resourcesPathLocal}/${URI_API}/${fileName}.js`, { flags: 'w', encoding: 'utf-8' });
-    fileStream.write('module.exports = ');
-
     res.set('Content-Type', 'application/json')
 
-    if (request.headers.get('content-type').includes('xml')) {
-      res.set('Content-Type', 'application/xml')
-      fileStream.write('{ type: \'xml\', content: \'');
-      closeFile = '\'}\n'
-    }
+    const json = await request.json()
+
+    dbService.onRequests.create({ type: 'default', method, url: uri, status: request.status, response: json })
 
     res.status(request.status)
-    request.body.pipe(res)
-    request.body.pipe(fileStream, { end: false })
-
-    request.body.on('end', function () {
-      fileStream.end(closeFile)
-    })
+    res.send(json)
   } catch (e) {
     console.log(e)
     res.status(500).json({ err: 1 })
