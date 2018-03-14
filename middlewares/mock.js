@@ -78,9 +78,14 @@ module.exports = ({ server, dbService }) => async (req, res, next) => {
 
     res.set("Content-Type", "application/json");
 
-    const json = await request.json();
+    let json
+    try{
+      json = await request.json();
+    }catch(e){
+      console.log(e)
+    }
 
-    saveRequestDb(mockRequest, {
+    saveRequestDb({mockRequest}, {
       type: "default",
       method,
       url: uri,
