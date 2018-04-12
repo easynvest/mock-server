@@ -24,6 +24,15 @@ const saveRequest = dbService => (mockRequest = {}, newRequest) => {
   dbService.onRequests.create(newRequest);
 };
 
+const transformResponse = async request => {
+  let contentType = request.headers._headers["content-type"][0];
+  if (contentType.includes("text/plain")) {
+    return request.text();
+  } else {
+    return request.json();
+  }
+};
+
 module.exports = ({ server, dbService }) => async (req, res, next) => {
   const saveRequestDb = saveRequest(dbService);
   const { uriApi: URI_API } = getConfig();
@@ -78,23 +87,26 @@ module.exports = ({ server, dbService }) => async (req, res, next) => {
 
     res.set("Content-Type", "application/json");
 
-    let json
-    try{
-      json = await request.json();
-    }catch(e){
-      console.log(e)
+    let response;
+    try {
+      response = await transformResponse(request);
+    } catch (e) {
+      console.log(e);
     }
 
-    saveRequestDb({mockRequest}, {
-      type: "default",
-      method,
-      url: uri,
-      status: request.status,
-      response: json
-    });
+    saveRequestDb(
+      { mockRequest },
+      {
+        type: "default",
+        method,
+        url: uri,
+        status: request.status,
+        response
+      }
+    );
 
     res.status(request.status);
-    res.send(json);
+    res.send(response);
   } catch (e) {
     console.log(e);
     res.status(500).json({ err: 1 });
