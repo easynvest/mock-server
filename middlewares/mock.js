@@ -41,11 +41,9 @@ module.exports = ({ server, dbService }) => async (req, res, next) => {
   const uri = `http://${URI_API}${parsedUrl.path}`;
   let mockRequest = dbService.onRequests.getTo({ method, url: uri });
 
-	let delay = 0;
-
-	if(mockRequest) {
-		delay = mockRequest.delay || 0;
-	}
+  if (!mockRequest) return
+	
+  let delay =  mockRequest.delay || 0;
 	
 	setTimeout(async () => {
 		if (!server.locals.requestApi) {
