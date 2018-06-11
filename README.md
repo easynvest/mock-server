@@ -1,7 +1,15 @@
 # Mock Server
 > Caso tenha a necessidade de fazer mock de api com a possibilidade de criar diversos cenários
 
-## Desenvolvendo
+O Mock Server pode ser usado para mockar qualquer sistema que você integre via HTTP ou HTTPS (ou seja, serviços, sites, etc).
+
+Quando o Mock Server recebe um pedido, ele corresponde ao pedido em relação às expectativas ativas que foram configuradas.
+
+O proxy do Mock Server pode ser usado para registrar de forma transparente todas as solicitações enviadas por um sistema (por exemplo, um aplicativo ou conjunto de aplicativos).
+
+O Mock Server permite que você mexa com qualquer servidor ou serviço ao qual você se conecta por meio de HTTP ou HTTPS, como um serviço REST ou RPC.
+
+## Desenvolvido
 
 Este projeto foi construído com Node, Express, Lowdb e mais algumas bibliotecas segue a lista abaixo:
 
