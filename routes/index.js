@@ -4,7 +4,15 @@ var router = express.Router();
 const configureRoutes = ({ server, dbService }) => {
   /* GET home page. */
   router.get("/", function(req, res, next) {
-    res.render("index", { title: "Express" });
+    res.status(200).send(`
+  *************** MOCK SERVER CLI ***************
+  ** Run in your terminal
+  ** $ npm install @easynvest/mock-server
+  ** $ mock-server init
+  ** $ mock-server start
+  ** or
+  ** $ mock-server --help
+  *************** MOCK SERVER CLI ***************\n`)
   });
 
   router.get("/request-api", (req, res) => {
