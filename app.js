@@ -7,14 +7,13 @@ var bodyParser = require("body-parser");
 
 var index = require("./routes/index");
 const customMiddlewares = require("./middlewares");
-const { setConfig } = require('./config')
+const { setConfig } = require("./config");
 
 const configureApp = (config, cacheOnly) => {
-  setConfig(config)
-  const dbService = require("./db");
+  setConfig(config);
+  const services = require("./services")();
   var app = express();
 
-  app.locals.db = dbService;
   app.locals.requestApi = !cacheOnly;
 
   app.use(logger("dev"));
@@ -23,9 +22,9 @@ const configureApp = (config, cacheOnly) => {
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, "public")));
 
-  app.use("/", index({ server: app, dbService }));
+  app.use("/", index({ server: app, services }));
 
-  customMiddlewares({ server: app, dbService });
+  customMiddlewares({ server: app, services });
 
   app.use(function(req, res, next) {
     var err = new Error("Not Found");

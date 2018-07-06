@@ -6,7 +6,8 @@
   "license": "Apache-2.0",
   "preferGlobal": true,
   "scripts": {
-    "start": "echo Command Line Interface"
+    "start": "echo Command Line Interface",
+    "test": "mocha test/**/*.js"
   },
   "bin": {
     "mock-server": "./bin/cli.js"
@@ -39,5 +40,9 @@
     "node-fetch": "^1.7.3",
     "serve-favicon": "~2.4.5",
     "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "expect": "^23.3.0",
+    "mocha": "^5.2.0"
   }
 }

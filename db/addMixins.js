@@ -1,33 +1,31 @@
-const lodashId = require('lodash-id')
+const lodashId = require("lodash-id");
 
-module.exports = function (db) {
+module.exports = function(db) {
+  const _ = db._;
 
-  const _ = db._
-
-  _.mixin(lodashId)
+  _.mixin(lodashId);
 
   _.mixin({
-    pushIfNotExists: function (array, data, verifyKeys) {
-      const dataOriginal = _.cloneDeep(data)
+    pushIfNotExists: function(array, data, verifyKeys) {
+      const dataOriginal = _.cloneDeep(data);
 
       const exists = array.filter(item => {
         if (verifyKeys) {
-          item = _.pick(item, verifyKeys)
-          data = _.pick(data, verifyKeys)
+          item = _.pick(item, verifyKeys);
+          data = _.pick(data, verifyKeys);
         }
 
-        const valuesItem = _.valuesIn(item) 
-        const valuesData = _.valuesIn(data)
+        const valuesItem = _.valuesIn(item);
+        const valuesData = _.valuesIn(data);
 
-        return _.isEqual(valuesItem, valuesData)
-      })
+        return _.isEqual(valuesItem, valuesData);
+      });
 
       if (exists.length === 0) {
-        _.insert(array, dataOriginal)
+        _.insert(array, dataOriginal);
       }
 
-      return array
+      return array;
     }
-  })
-
-}
+  });
+};
