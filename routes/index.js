@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-const configureRoutes = ({ server, dbService }) => {
+const configureRoutes = ({ server, services }) => {
   /* GET home page. */
   router.get("/", function(req, res, next) {
     res.status(200).send(`
@@ -12,7 +12,7 @@ const configureRoutes = ({ server, dbService }) => {
   ** $ mock-server start
   ** or
   ** $ mock-server --help
-  *************** MOCK SERVER CLI ***************\n`)
+  *************** MOCK SERVER CLI ***************\n`);
   });
 
   router.get("/request-api", (req, res) => {
@@ -21,11 +21,11 @@ const configureRoutes = ({ server, dbService }) => {
   });
 
   router.get("/requests", (req, res) => {
-    res.status(200).json(dbService.onRequests.requests.value());
+    res.status(200).json(services.onRequests.requests.value());
   });
 
   router.get("/scenarios", (req, res) => {
-    res.status(200).json(dbService.onScenarios.scenarios.value());
+    res.status(200).json(services.onScenarios.scenarios.value());
   });
 
   return router;

@@ -1,5 +1,5 @@
-const mock = require('./mock')
+const mock = require("./mock");
 
-module.exports = ({ server, dbService }) => {
-  server.use('/proxy', mock({ server, dbService }))
-}
+module.exports = ({ server, services }) => {
+  server.use("/proxy", mock({ server, services }));
+};
