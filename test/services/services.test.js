@@ -1,4 +1,3 @@
-const expect = require("expect");
 const Memory = require("lowdb/adapters/Memory");
 const configDB = require("../../db");
 const servicesConfig = require("../../services");
@@ -6,7 +5,7 @@ const servicesConfig = require("../../services");
 let services;
 let db;
 
-before(() => {
+beforeAll(() => {
   db = configDB(new Memory(), { requests: [], scenarios: [] });
   services = servicesConfig(db);
 });
@@ -35,7 +34,7 @@ describe("Service", () => {
     expect(request.url).toBe(url);
   });
 
-  it("should create a new request with default type");
+  it.skip("should create a new request with default type", () => {});
 
-  it("should create a same request when exists method and url with custom type");
+  it.skip("should create a same request when exists method and url with custom type", () => {});
 });
