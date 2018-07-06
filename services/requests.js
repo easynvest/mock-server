@@ -52,6 +52,21 @@ class Requests {
     return request;
   }
 
+  saveIfHasDiff(mockRequest = {}, newRequest) {
+    const _ = this._;
+    const attrsCompare = ["method", "url", "status"];
+
+    if (_.isEqual(_.pick(mockRequest, attrsCompare), _.pick(newRequest, attrsCompare))) {
+      return;
+    }
+
+    if (!_.isEmpty(mockRequest)) {
+      newRequest.type = "custom";
+    }
+
+    this.create(newRequest);
+  }
+
   defineDefaut(id) {
     const request = this.requests.getById(id);
 
