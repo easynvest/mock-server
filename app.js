@@ -4,6 +4,7 @@ const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const services = require('./services')()
+
 const index = require('./routes/index')
 const customMiddlewares = require('./middlewares')
 const { setConfig } = require('./config')

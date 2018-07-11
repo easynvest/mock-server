@@ -22,3 +22,5 @@ yarn-error.log*
 .reify-cache/
 
 ecosystem.config.js
+mock-server/
+mock-server.conf.*
