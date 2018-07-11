@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb-base",
+  "overrides": [
+    {
+      "files": [ "bin/*.js", "db/*.js", "middlewrares/*.js", "routes/*.js",
+        "services/*.js", "tests/*.js", "app.js", ".eslintrc.json" ],
+      "excludedFiles": "node_modules"
+    }
+  ],
+  "rules": {
+    "max-len": ["error", 100],
+    "semi": [
+      2,
+      "never"
+    ]
+  }
+}

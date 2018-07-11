@@ -6,6 +6,8 @@
   "license": "Apache-2.0",
   "preferGlobal": true,
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "start": "echo Command Line Interface",
     "test": "jest"
   },
@@ -42,6 +44,9 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
     "jest": "^23.3.0"
   }
 }
