@@ -35,17 +35,18 @@ class Requests {
     return request.value();
   }
 
-  create({ type = "custom", method = "GET", url, status = 200, response }) {
+  create({ type = "custom", method = "GET", url, status = 200, response, query = {} }) {
     const request = this.requests
       .pushIfNotExists(
         {
           type,
+          query,
           method: method.toUpperCase(),
           url,
           status,
           response
         },
-        ["method", "url", "status", "response"]
+        ["method", "url", "status", "response", "query"]
       )
       .write();
 
@@ -54,7 +55,7 @@ class Requests {
 
   saveIfHasDiff(mockRequest = {}, newRequest) {
     const _ = this._;
-    const attrsCompare = ["method", "url", "status"];
+    const attrsCompare = ["method", "url", "status", "query"];
 
     if (_.isEqual(_.pick(mockRequest, attrsCompare), _.pick(newRequest, attrsCompare))) {
       return;

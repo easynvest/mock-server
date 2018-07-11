@@ -7,10 +7,6 @@ module.exports = ({ server, services }) => async (req, res, next) => {
   const { uriApi: URI_API } = getConfig();
   const parsedUrl = url.parse(req.originalUrl.replace(/^\/proxy/, ""));
   const method = req.method;
-  const uri = `http://${URI_API}${parsedUrl.path}`;
-  let mockRequest = services.onRequests.getTo({ method, url: uri });
-
-  req.mockRequest = mockRequest;
-
+  req.mockRequest = services.onRequests.getTo({ method, url: parsedUrl.pathname });
   next();
 };
