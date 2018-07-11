@@ -1,8 +1,11 @@
 {
   "extends": "airbnb-base",
+  "env": {
+    "jest": true
+  },
   "overrides": [
     {
-      "files": [ "bin/*.js", "db/*.js", "middlewrares/*.js", "routes/*.js",
+      "files": [ "db/*.js", "middlewrares/*.js", "routes/*.js",
         "services/*.js", "tests/*.js", "app.js", ".eslintrc.json" ],
       "excludedFiles": "node_modules"
     }
@@ -12,6 +15,10 @@
     "semi": [
       2,
       "never"
+    ],
+    "arrow-parens": [
+      2,
+      "as-needed"
     ]
   }
 }

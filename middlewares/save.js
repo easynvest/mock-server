@@ -1,25 +1,25 @@
-const debug = require("debug")("mock-server:middleware:save");
+const debug = require('debug')('mock-server:middleware:save')
 
-module.exports = ({ server, services }) => async (req, res, next) => {
-  debug("save");
+module.exports = ({ services }) => async (req, res, next) => {
+  debug('save')
   const {
     mockRequest,
     requestHttp: { request, response },
-    method
-  } = req;
+    method,
+  } = req
 
-  const { url, status } = request;
+  const { url, status } = request
 
   services.onRequests.saveIfHasDiff(
     { mockRequest },
     {
-      type: "default",
+      type: 'default',
       method,
       url,
       status,
-      response
-    }
-  );
+      response,
+    },
+  )
 
-  next();
-};
+  next()
+}
