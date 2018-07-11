@@ -45,9 +45,10 @@ module.exports = ({ server, services }) => async (req, res, next) => {
     });
 
     if (likeSorted.length > 0) {
+      const [cachedReponse] = likeSorted;
       res.append("x-request-mock", "true");
-      res.status(likeSorted[0].status);
-      res.send(likeSorted[0].response);
+      res.status(cachedReponse.status);
+      res.send(cachedReponse.response);
       return;
     }
 
