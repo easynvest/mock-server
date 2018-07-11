@@ -10,9 +10,8 @@ const { getConfig } = require("../config");
 const getLikeURL = (acc, char, key, url) => {
   const str = acc.str + char;
   const list = acc.list.filter(({ url }) => url.startsWith(str));
-  if (list.length === 0) {
-    if (url.length / 2 <= str.length) return acc;
-    return { list: [], str };
+  if (list.length === 0 && url.length / 2 <= str.length) {
+    return acc;
   }
   return { list, str };
 };
