@@ -2,8 +2,6 @@ const path = require("path");
 const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
 const addMixins = require("./addMixins");
-const { getConfig } = require("../config");
-
 const resourcesPathLocal = path.join(process.cwd(), "./mock-server");
 
 const configDB = (

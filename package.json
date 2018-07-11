@@ -1,12 +1,13 @@
 {
   "name": "@easynvest/mock-server",
   "version": "0.3.0",
-  "description": "",
+  "description": "> Caso tenha a necessidade de fazer mock de api com a possibilidade de criar diversos cenários",
   "main": "index.js",
   "license": "Apache-2.0",
   "preferGlobal": true,
   "scripts": {
-    "start": "echo Command Line Interface",
+    "init": "node bin/cli.js init",
+    "start": "nodemon -q bin/cli.js start",
     "test": "jest"
   },
   "bin": {
@@ -42,6 +43,10 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "jest": "^23.3.0"
+    "jest": "^23.3.0",
+    "nodemon": "^1.18.0"
+  },
+  "directories": {
+    "test": "test"
   }
 }

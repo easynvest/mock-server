@@ -41,7 +41,9 @@ module.exports = ({ server, services }) => async (req, res, next) => {
   } = req;
 
   const parsedUrl = url.parse(originalUrl.replace(/^\/proxy/, ""));
-  const uri = `http://${URI_API}${parsedUrl.path}`;
+  const uri = URI_API.includes("http")
+    ? `${URI_API}${parsedUrl.path}`
+    : `http://${URI_API}${parsedUrl.path}`;
 
   try {
     const config = {
