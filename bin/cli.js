@@ -105,8 +105,7 @@ program
       if (err) console.log(err);
       console.log(`JSON Server is running: http://localhost:${port}/ point to => ${config.uriApi}`);
     });
-  })
-  .on("cache", () => console.log("OLA MUNDO CACHE"));
+  });
 
 program
   .version("0.1.0")
