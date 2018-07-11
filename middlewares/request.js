@@ -15,32 +15,38 @@ const transformResponse = async request => {
   }
 };
 
+const getRequestBody = ({ body, contentType }) => {
+  if (contentType.includes("json")) {
+    return JSON.stringify(body);
+  }
+
+  if (contentType.includes("x-www-form-urlencoded")) {
+    const form = new url.URLSearchParams();
+    Object.keys(body).forEach(key => {
+      form.append(key, req.body[key]);
+    });
+
+    return form;
+  }
+};
+
 module.exports = ({ server, services }) => async (req, res, next) => {
   debug("request");
   const { uriApi: URI_API } = getConfig();
-  const parsedUrl = url.parse(req.originalUrl.replace(/^\/proxy/, ""));
-  const method = req.method;
+  const {
+    body,
+    method,
+    originalUrl,
+    headers: { authorization, "content-type": contentType = "" }
+  } = req;
+
+  const parsedUrl = url.parse(originalUrl.replace(/^\/proxy/, ""));
   const uri = `http://${URI_API}${parsedUrl.path}`;
-  const { authorization, "content-type": contentType = "" } = req.headers;
 
   try {
-    let reqBody = req.body;
-    if (contentType.includes("json")) {
-      reqBody = JSON.stringify(reqBody);
-    }
-
-    if (contentType.includes("x-www-form-urlencoded")) {
-      const form = new url.URLSearchParams();
-      Object.keys(req.body).forEach(key => {
-        form.append(key, req.body[key]);
-      });
-
-      reqBody = form;
-    }
-
     const config = {
       method,
-      body: reqBody,
+      body: getRequestBody({ body, contentType }),
       headers: {
         authorization,
         "content-type": contentType
@@ -48,15 +54,8 @@ module.exports = ({ server, services }) => async (req, res, next) => {
     };
 
     const request = await fetch(uri, config);
-
-    let response;
-    try {
-      response = await transformResponse(request);
-
-      req.requestHttp = { request, response };
-    } catch (e) {
-      console.log(e);
-    }
+    const response = await transformResponse(request);
+    req.requestHttp = { request, response };
   } catch (e) {
     console.log(e);
   }
