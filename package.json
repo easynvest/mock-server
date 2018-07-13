@@ -10,7 +10,8 @@
     "start": "node bin/cli.js start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "jest"
+    "test": "jest",
+    "prepush": "npm run lint"
   },
   "bin": {
     "mock-server": "./bin/cli.js"
