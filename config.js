@@ -1,6 +1,6 @@
 let globalConfig = {
   port: '',
-  uriApi: ''
+  uriApi: '',
 }
 
 const getConfig = () => globalConfig
@@ -11,5 +11,5 @@ const setConfig = config => {
 
 module.exports = {
   getConfig,
-  setConfig
+  setConfig,
 }

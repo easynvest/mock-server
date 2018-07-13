@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-const program = require("commander");
-const { prompt } = require("inquirer");
-const forever = require("forever-monitor");
-const fs = require("fs");
-const path = require("path");
-const chalk = require("chalk");
+const program = require('commander')
+const { prompt } = require('inquirer')
+const fs = require('fs')
+const path = require('path')
+const http = require('http')
+const mockServer = require('../app')
 
-const localPath = process.cwd();
+const localPath = process.cwd()
 
 const questions = [
   {
@@ -16,10 +16,10 @@ const questions = [
     message: "Deseja criar uma pasta para o mock-server..."
   },
   {
-    type: "input",
-    name: "port",
-    message: "Informe a porta que deseja utiliar o mock...",
-    default: "3001"
+    type: 'input',
+    name: 'port',
+    message: 'Informe a porta que deseja utiliar o mock...',
+    default: '3001',
   },
   {
     type: "input",
@@ -31,12 +31,12 @@ const questions = [
     message: "Informe a url da api..."
   },
   {
-    type: "input",
-    name: "resourcesPath",
-    message: "Informa o local onde deseja armazenar os resources...",
-    default: "./mock-server/resources"
-  }
-];
+    type: 'input',
+    name: 'resourcesPath',
+    message: 'Informa o local onde deseja armazenar os resources...',
+    default: './mock-server/resources',
+  },
+]
 
 function startServer(cache = false, silent = false, fileName) {
   return forever.start("server.js", {
@@ -136,9 +136,9 @@ function infinitPrompt(props) {
 }
 
 program
-  .command("init")
-  .alias("i")
-  .description("Generate a mock config")
+  .command('init')
+  .alias('i')
+  .description('Generate a mock config')
   .action(() => {
     prompt(questions).then(responses => {
       if (responses.mockPath) {

@@ -1,3 +1,3 @@
-const configDB = require("./configDB");
+const configDB = require('./configDB')
 
-module.exports = configDB;
+module.exports = configDB
