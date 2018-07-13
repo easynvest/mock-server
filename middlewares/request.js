@@ -38,10 +38,10 @@ module.exports = () => async (req, res, next) => {
     headers: { authorization, 'content-type': contentType = '' },
   } = req
 
-  const parsedUrl = url.parse(originalUrl.replace(/^\/proxy/, ""));
-  const uri = URI_API.includes("http")
+  const parsedUrl = url.parse(originalUrl.replace(/^\/proxy/, ''))
+  const uri = URI_API.includes('http')
     ? `${URI_API}${parsedUrl.path}`
-    : `http://${URI_API}${parsedUrl.path}`;
+    : `http://${URI_API}${parsedUrl.path}`
 
   try {
     const config = {

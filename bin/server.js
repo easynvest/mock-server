@@ -1,22 +1,25 @@
-const fs = require("fs");
-const path = require("path");
-const mockServer = require("../app");
-const localPath = process.cwd();
-const { cacheOnly = false, mockServerConfigName = "mock-server.conf.js" } = process.env;
+/* eslint no-console:  ["error", { allow: ["log"] }] */
+// eslint-disable-line global-require
 
-const configFile = path.join(localPath, mockServerConfigName);
+const path = require('path')
+const mockServer = require('../app')
 
-if (!fs.existsSync(configFile)) {
-  console.error(`Não foi possivel encontrar o arquivo de configuração:\nArquivo: "${configFile}"`);
-  return;
+const localPath = process.cwd()
+const { cacheOnly = false, mockServerConfigName = 'mock-server.conf.js' } = process.env
+
+const configFile = path.join(localPath, mockServerConfigName)
+
+try {
+  // eslint-disable-next-line
+  const config = require(configFile)
+  const app = mockServer(config, cacheOnly)
+  const port = config.port || 3001
+
+  app.set('port', port)
+  app.listen(port, err => {
+    if (err) console.log(err)
+    console.log('\n> Server Start\n')
+  })
+} catch (e) {
+  console.log('Error', e)
 }
-
-const config = require(configFile);
-const app = mockServer(config, cacheOnly);
-const port = config.port || 3001;
-
-app.set("port", port);
-app.listen(port, function(err) {
-  if (err) console.log(err);
-  console.log("\n> Server Start\n");
-});

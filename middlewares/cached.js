@@ -2,10 +2,10 @@ const debug = require('debug')('mock-server:middleware:cached')
 const URL = require('url')
 
 const getLikeURL = (acc, char, key, url) => {
-  const str = acc.str + char;
-  const list = acc.list.filter(({ url }) => url.startsWith(str));
+  const str = acc.str + char
+  const list = acc.list.filter(mock => mock.url.startsWith(str))
   if (list.length === 0 && url.length / 2 <= str.length) {
-    return acc;
+    return acc
   }
   return { list, str }
 }
