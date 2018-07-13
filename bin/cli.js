@@ -2,9 +2,10 @@
 
 const program = require("commander");
 const { prompt } = require("inquirer");
+const forever = require("forever-monitor");
 const fs = require("fs");
 const path = require("path");
-const mockServer = require("../app");
+const chalk = require("chalk");
 
 const localPath = process.cwd();
 
@@ -36,6 +37,103 @@ const questions = [
     default: "./mock-server/resources"
   }
 ];
+
+function startServer(cache = false, silent = false, fileName) {
+  return forever.start("server.js", {
+    uid: "server",
+    watch: false,
+    silent,
+    env: {
+      cacheOnly: cache,
+      mockServerConfigName: fileName
+    },
+    sourceDir: "./bin/"
+  });
+}
+
+function infinitPrompt(props) {
+  const state = { server: startServer(props.cacheOnly, props.configFile), ...props, silent: true };
+
+  process.on("SIGINT", function() {
+    state.server && state.server.stop();
+    process.exit(2);
+  });
+
+  process.on("exit", function() {
+    state.server && state.server.stop();
+  });
+
+  const startPrompt = () => {
+    console.log(
+      props.message,
+      chalk.white.bold("\n> Cache-only: ") +
+        chalk.yellow.bold(state.cacheOnly ? "active" : "disable"),
+      chalk.white.bold("\n> Show log:   ") +
+        chalk.yellow.bold(!state.silent ? "active" : "disable") +
+        "\n"
+    );
+
+    const options = [
+      {
+        type: "list",
+        name: "option",
+        message: "Options",
+        choices: [
+          {
+            value: "d",
+            name: chalk.hex("#888b8d")(
+              " Select to" + (state.cacheOnly ? " Disable " : " Enable ") + "cache-only"
+            )
+          },
+          {
+            value: "r",
+            name: chalk.hex("#888b8d")(" Select to Restart mock-server")
+          },
+          {
+            value: "s",
+            name: chalk.hex("#888b8d")(
+              " Select to" + (state.silent ? " Enable log" : " Disable log")
+            )
+          },
+          {
+            value: "c",
+            name: chalk.hex("#888b8d")(" Select to close mock-server")
+          }
+        ]
+      }
+    ];
+
+    prompt(options).then(response => {
+      process.stdout.write("\033c");
+      switch (response.option) {
+        case "r":
+          state.server.stop();
+          state.server = startServer(state.cacheOnly, state.silent, state.configFile);
+          break;
+        case "d":
+          state.cacheOnly = !state.cacheOnly;
+          state.server.stop();
+          state.server = startServer(state.cacheOnly, state.silent, state.configFile);
+          break;
+        case "s":
+          state.silent = !state.silent;
+          state.server.stop();
+          state.server = startServer(state.cacheOnly, state.silent, state.configFile);
+          break;
+        case "c":
+          state.server.stop();
+          process.exit(2);
+          process.stdout.write("\033c");
+          return;
+      }
+
+      startPrompt();
+    });
+
+    if (!state.silent) console.log("\n");
+  };
+  startPrompt();
+}
 
 program
   .command("init")
@@ -81,30 +179,16 @@ program
   .alias("s")
   .description("Start mock-server")
   .action(mockServerConfigName => {
-    const cacheOnly = program.cacheOnly || false;
+    const configFile =
+      typeof mockServerConfigName === "object" ? "mock-server.conf.js" : mockServerConfigName;
 
-    if (typeof mockServerConfigName === "object") {
-      mockServerConfigName = "mock-server.conf.js";
-    }
+    const configPath = path.join(localPath, configFile);
+    const config = require(configPath);
+    const message =
+      chalk.green.bold("\n> Mock-Server is running: ") +
+      chalk.white(`http://localhost:${config.port}/proxy point to => ${config.uriApi}`);
 
-    const configFile = path.join(localPath, mockServerConfigName);
-
-    if (!fs.existsSync(configFile)) {
-      console.error(
-        `Não foi possivel encontrar o arquivo de configuração:\nArquivo: "${configFile}"`
-      );
-      return;
-    }
-
-    const config = require(configFile);
-    const app = mockServer(config, cacheOnly);
-    const port = config.port || 3001;
-
-    app.set("port", port);
-    app.listen(port, function(err) {
-      if (err) console.log(err);
-      console.log(`JSON Server is running: http://localhost:${port}/ point to => ${config.uriApi}`);
-    });
+    infinitPrompt({ message, cacheOnly: program.cacheOnly, configFile });
   });
 
 program
