@@ -1,11 +1,10 @@
-const debug = require("debug")("mock-server:middleware:response");
+const debug = require('debug')('mock-server:middleware:response')
+const propPath = require('crocks/Maybe/propPath')
 
-module.exports = ({ server, services }) => async (req, res, next) => {
-  debug("response");
-  const {
-    requestHttp: { request, response }
-  } = req;
-  const { status } = request;
+module.exports = () => async (req, res) => {
+  debug('response')
+  const status = propPath(['requestHttp', 'request', 'status'])(req).option(200)
+  const response = propPath(['requestHttp', 'response'])(req).option({})
 
-  res.status(status).send(response);
-};
+  res.status(status).send(response)
+}

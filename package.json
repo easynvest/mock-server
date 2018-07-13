@@ -1,11 +1,13 @@
 {
   "name": "@easynvest/mock-server",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "",
   "main": "index.js",
   "license": "Apache-2.0",
   "preferGlobal": true,
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "start": "echo Command Line Interface",
     "test": "jest"
   },
@@ -29,6 +31,7 @@
     "chalk": "^2.3.0",
     "commander": "^2.12.2",
     "cookie-parser": "~1.4.3",
+    "crocks": "^0.9.4",
     "debug": "~2.6.9",
     "express": "^4.16.3",
     "form-data": "^2.3.1",
@@ -42,6 +45,9 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
     "jest": "^23.3.0"
   }
 }
