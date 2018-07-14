@@ -27,6 +27,7 @@ const questions = [
     type: 'input',
     name: 'api',
     validate: input => {
+      // eslint-disable-next-line
       const regex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
       return !!input.trim() && regex.test(input)
     },
