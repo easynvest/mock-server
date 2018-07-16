@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "start": "echo Command Line Interface",
-    "test": "jest"
+    "test": "jest",
+    "prepush": "npm run lint && npm run test"
+
   },
   "bin": {
     "mock-server": "./bin/cli.js"
@@ -48,6 +50,25 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
+    "husky": "^0.14.3",
     "jest": "^23.3.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "db/*.js",
+      "middlewrares/*.js",
+      "routes/*.js",
+      "services/*.js",
+      "app.js"
+
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 75,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   }
 }
