@@ -50,12 +50,12 @@ function startServer(cache = false, silent = false, fileName) {
       cacheOnly: cache,
       mockServerConfigName: fileName,
     },
-    sourceDir: './bin/',
+    sourceDir: path.join(localPath, '/node_modules/@easynvest/mock-server/bin/'),
   })
 }
 
 function infinitPrompt(props) {
-  // eslint-disable-next-line
+  // eslint-disable-next-line global-require, import/no-dynamic-require
   const { port, uriApi } = require(path.join(localPath, props.configFile))
   kill(port)
 
@@ -64,7 +64,7 @@ function infinitPrompt(props) {
     ...props,
     silent: true,
     message,
-    server: startServer(props.cacheOnly, props.configFile),
+    server: startServer(props.cacheOnly, true, props.configFile),
   }
 
   const killServer = () => {
@@ -189,7 +189,6 @@ program
   .description('Start mock-server')
   .action(mockServerConfigName => {
     const configFile = typeof mockServerConfigName === 'object' ? 'mock-server.conf.js' : mockServerConfigName
-
     infinitPrompt({ cacheOnly: program.cacheOnly, configFile })
   })
 
