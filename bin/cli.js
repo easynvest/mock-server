@@ -13,31 +13,26 @@ const localPath = process.cwd()
 
 const questions = [
   {
-    type: 'confirm',
+    type: 'input',
     name: 'mockPath',
-    message: 'Deseja criar uma pasta para o mock-server...',
+    message: 'Inform the folder name you want use',
+    default: './mock-server',
   },
   {
     type: 'input',
     name: 'port',
-    message: 'Informe a porta que deseja utiliar o mock...',
+    message: 'Please tell which port you want to use',
     default: '3001',
   },
   {
     type: 'input',
     name: 'api',
     validate: input => {
-      // eslint-disable-next-line
+      // eslint-disable-next-line no-useless-escape, max-len
       const regex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
       return !!input.trim() && regex.test(input)
     },
-    message: 'Informe a url da api...',
-  },
-  {
-    type: 'input',
-    name: 'resourcesPath',
-    message: 'Informa o local onde deseja armazenar os resources...',
-    default: './mock-server/resources',
+    message: 'Enter with the url API',
   },
 ]
 
@@ -59,7 +54,8 @@ function infinitPrompt(props) {
   const { port, uriApi } = require(path.join(localPath, props.configFile))
   kill(port)
 
-  const message = chalk.green.bold('\n> Mock-Server is running: ') + chalk.white(`http://localhost:${port}/proxy point to => ${uriApi}`)
+  const message = chalk.green.bold('\n> Mock-Server is running: ')
+    + chalk.white(`http://localhost:${port}/proxy point to => ${uriApi}`)
   const state = {
     ...props,
     silent: true,
@@ -81,8 +77,10 @@ function infinitPrompt(props) {
   const startPrompt = () => {
     console.log(
       state.message,
-      chalk.white.bold('\n> Cache-only: ') + chalk.yellow.bold(state.cacheOnly ? 'active' : 'disable'),
-      `${chalk.white.bold('\n> Show log:   ') + chalk.yellow.bold(!state.silent ? 'active' : 'disable')}\n`,
+      chalk.white.bold('\n> Cache-only: ')
+        + chalk.yellow.bold(state.cacheOnly ? 'active' : 'disable'),
+      `${chalk.white.bold('\n> Show log:   ')
+        + chalk.yellow.bold(!state.silent ? 'active' : 'disable')}\n`,
     )
 
     const options = [
@@ -93,7 +91,9 @@ function infinitPrompt(props) {
         choices: [
           {
             value: 'd',
-            name: chalk.hex('#888b8d')(` Select to${state.cacheOnly ? ' Disable ' : ' Enable '}cache-only`),
+            name: chalk.hex('#888b8d')(
+              ` Select to${state.cacheOnly ? ' Disable ' : ' Enable '}cache-only`,
+            ),
           },
           {
             value: 'r',
@@ -101,7 +101,9 @@ function infinitPrompt(props) {
           },
           {
             value: 's',
-            name: chalk.hex('#888b8d')(` Select to${state.silent ? ' Enable log' : ' Disable log'}`),
+            name: chalk.hex('#888b8d')(
+              ` Select to${state.silent ? ' Enable log' : ' Disable log'}`,
+            ),
           },
           {
             value: 'c',
@@ -153,31 +155,30 @@ program
   .action(() => {
     prompt(questions).then(responses => {
       if (responses.mockPath) {
-        const mockPath = path.join(localPath, './mock-server')
-        const resourcesPath = path.join(localPath, responses.resourcesPath)
+        const mockPath = path.join(localPath, responses.mockPath)
 
         if (!fs.existsSync(mockPath)) {
           fs.mkdirSync(mockPath)
         }
 
-        if (!fs.existsSync(resourcesPath)) {
-          fs.mkdirSync(resourcesPath)
+        const mockConfigPath = path.join(localPath, './mock-server.conf.js')
+        const mockConfigFile = fs.createWriteStream(mockConfigPath, {
+          flags: 'w',
+          encoding: 'utf-8',
+        })
+        const rewriteRoutesPath = path.join(mockPath, './rewriteRoutes.js')
+        const rewriteRoutesFile = fs.createWriteStream(rewriteRoutesPath, {
+          flags: 'w',
+          encoding: 'utf-8',
+        })
+
+        const jsonConfig = {
+          port: responses.port,
+          uriApi: 'swapi.co',
+          rewriteRoutes: `${responses.mockPath}/rewriteRoutes.js`,
         }
 
-        const mockConfigFile = fs.createWriteStream(path.join(localPath, './mock-server.conf.js'), {
-          flags: 'w',
-          encoding: 'utf-8',
-        })
-        const rewriteRoutesFile = fs.createWriteStream(path.join(mockPath, './rewriteRoutes.js'), {
-          flags: 'w',
-          encoding: 'utf-8',
-        })
-
-        mockConfigFile.end(
-          `module.exports = {\n  port: '${responses.port}',\n  uriApi: '${responses.api}',\n  rewriteRoutes: '${
-            responses.mockPath
-          }/rewriteRoutes.js',\n  resourcesPath: '${responses.resourcesPath}'\n}\n`,
-        )
+        mockConfigFile.end(`module.exports = ${JSON.stringify(jsonConfig, null, 2)}`)
         rewriteRoutesFile.end("module.exports = {\n  '/api/*': '/$1'\n}\n")
       }
     })
@@ -187,8 +188,8 @@ program
   .command('start')
   .alias('s')
   .description('Start mock-server')
-  .action(mockServerConfigName => {
-    const configFile = typeof mockServerConfigName === 'object' ? 'mock-server.conf.js' : mockServerConfigName
+  .action(file => {
+    const configFile = typeof file === 'object' ? 'mock-server.conf.js' : file
     infinitPrompt({ cacheOnly: program.cacheOnly, configFile })
   })
 
