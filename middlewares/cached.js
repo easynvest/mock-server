@@ -23,7 +23,7 @@ module.exports = ({ server, services }) => async (req, res, next) => {
     }
 
     const { pathname } = URL.parse(req.url)
-    const barsNumber = pathname.split('/').length + 1
+    const barsNumber = pathname.split('/').length
     const cached = services.onRequests.requests
       .value()
       .filter(
