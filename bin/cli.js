@@ -134,6 +134,7 @@ function infinitPrompt(props) {
         case 'c':
           state.server.stop()
           process.exit(2)
+          kill(state.port)
           process.stdout.write('\x1B[2J\x1B[0f')
           return
         default:
