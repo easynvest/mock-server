@@ -23,12 +23,9 @@ module.exports = ({ server, services }) => async (req, res, next) => {
     }
 
     const { pathname } = URL.parse(req.url)
-    const barsNumber = pathname.split('/').length
     const cached = services.onRequests.requests
       .value()
-      .filter(
-        request => request.method === req.method && request.url.split('/').length === barsNumber,
-      )
+      .filter(request => request.method === req.method)
 
     const like = Array.prototype.reduce.call(pathname, getLikeURL, { list: cached, str: '' })
     const likeSorted = like.list.sort((a, b) => {
