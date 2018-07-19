@@ -57,7 +57,7 @@
     "collectCoverageFrom": [
       "*/**/*.js",
       "!**/coverage/**",
-      "!**/(index|*.spec).js"
+      "!**/(*.spec).js"
     ],
     "coverageThreshold": {
       "global": {
