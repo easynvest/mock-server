@@ -1,6 +1,6 @@
 {
   "name": "@easynvest/mock-server",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "",
   "main": "index.js",
   "license": "Apache-2.0",
@@ -12,7 +12,6 @@
     "test": "jest",
     "test:coverage": "npm run test -- --no-cache --coverage",
     "prepush": "npm run lint && npm run test:coverage"
-
   },
   "bin": {
     "mock-server": "./bin/cli.js"
@@ -57,6 +56,7 @@
   "jest": {
     "collectCoverageFrom": [
       "*/**/*.js",
+      "!**/coverage/**",
       "!**/(index|*.spec).js"
     ],
     "coverageThreshold": {

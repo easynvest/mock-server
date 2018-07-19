@@ -7,7 +7,7 @@
     {
       "files": [ "db/*.js", "middlewrares/*.js", "routes/*.js",
         "services/*.js", "tests/*.js", "app.js", ".eslintrc.json" ],
-      "excludedFiles": "node_modules"
+      "excludedFiles": ["coverage/"]
     }
   ],
   "rules": {
