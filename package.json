@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest",
+    "coverage": "npm run test -- --no-cache --coverage",
     "prepush": "npm run lint"
   },
   "bin": {

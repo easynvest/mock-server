@@ -82,6 +82,11 @@ class Requests {
 
     request.assign({ type: 'default' }).write()
   }
+
+  remove(id) {
+    const request = this.requests.value().find(item => item.id === id)
+    this.requests.remove(request).write()
+  }
 }
 
 module.exports = Requests

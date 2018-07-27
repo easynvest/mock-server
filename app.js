@@ -9,13 +9,14 @@ const index = require('./routes/index')
 const customMiddlewares = require('./middlewares')
 const { setConfig } = require('./config')
 
-const configureApp = (config, cacheOnly) => {
+const configureApp = (config, cacheOnly, showLog = true) => {
   setConfig(config)
   const app = express()
 
   app.locals.requestApi = !cacheOnly
 
-  app.use(logger('dev'))
+  if (showLog) app.use(logger('dev'))
+
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(cookieParser())
