@@ -71,9 +71,9 @@ const configureRoutes = ({ server, services }) => {
       } catch (e) {
         res.status(500).json()
       }
-    } else {
-      res.status(404).json()
     }
+
+    res.status(404).json()
   })
 
   router.delete('/requests/:id', (req, res) => {
