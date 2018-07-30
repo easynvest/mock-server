@@ -10,13 +10,25 @@
   "commit": true,
   "contributors": [
     {
+      "login": "guilhermegregio",
+      "name": "Guilherme Mangabeira Gregio",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/806519?s=400&v=4",
+      "profile": "https://github.com/guilhermegregio",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
+    },
+    {
       "login": "LucasdeCastro",
       "name": "Lucas de Castro",
       "avatar_url": "https://avatars1.githubusercontent.com/u/7875365?v=4",
       "profile": "https://github.com/LucasdeCastro",
       "contributions": [
         "code",
-        "doc"
+        "doc",
+        "test"
       ]
     }
   ]
