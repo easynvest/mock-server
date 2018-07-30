@@ -98,6 +98,35 @@ Exemplo de output:
 
 * Retorna as requests existentes no db.json
 
+> `POST      /requests         `
+
+```
+{
+    "type": custom | default , 
+    "method": [POST, GET, PUT, DELETE, PATCH, HEAD],
+    "url": Path,
+    "status": HTTP status,
+    "response": Resposta da requisição,
+    "query": Parâmetros de URL 
+  }
+
+```
+
+
+* Adiciona nova request no db.json
+
+> `GET      /requests/:id`
+
+* Retorna a request correspondente ao id
+
+> `PUT      /requests/:id`
+
+* Atualiza a request correspondente ao id
+
+> `DELETE      /requests/:id`
+
+* Remove a request correspondente ao id
+
 > `GET      /scenarios        `
 
 * Retorna as cenários existentes no db.json
