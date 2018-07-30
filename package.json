@@ -1,6 +1,6 @@
 {
   "name": "@easynvest/mock-server",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "",
   "main": "index.js",
   "license": "Apache-2.0",
@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest",
+    "coverage": "npm run test -- --no-cache --coverage",
     "prepush": "npm run lint"
   },
   "bin": {
@@ -19,6 +20,9 @@
   "keywords": [
     "mock-api"
   ],
+  "jest": {
+    "testEnvironment": "node"
+  },
   "homepage": "https://github.com/easynvest/mock-server#readme",
   "repository": {
     "type": "git",
@@ -53,7 +57,8 @@
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
     "husky": "^0.14.3",
-    "jest": "^23.3.0"
+    "jest": "^23.3.0",
+    "supertest": "^3.1.0"
   },
   "directories": {
     "test": "test"

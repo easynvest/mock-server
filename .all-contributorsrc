@@ -1,0 +1,23 @@
+{
+  "projectName": "mock-sever",
+  "projectOwner": "guilhermegregio",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "LucasdeCastro",
+      "name": "Lucas de Castro",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7875365?v=4",
+      "profile": "https://github.com/LucasdeCastro",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    }
+  ]
+}

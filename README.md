@@ -1,4 +1,5 @@
 # Mock Server
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 > Caso tenha a necessidade de fazer mock de api com a possibilidade de criar diversos cenários
 
 O Mock Server pode ser usado para mockar qualquer sistema que você integre via HTTP ou HTTPS (ou seja, serviços, sites, etc).
@@ -100,3 +101,15 @@ Exemplo de output:
 > `GET      /scenarios        `
 
 * Retorna as cenários existentes no db.json
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+| [<img src="https://avatars1.githubusercontent.com/u/7875365?v=4" width="100px;"/><br /><sub><b>Lucas de Castro</b></sub>](https://github.com/LucasdeCastro)<br />[💻](https://github.com/guilhermegregio/mock-sever/commits?author=LucasdeCastro "Code") [📖](https://github.com/guilhermegregio/mock-sever/commits?author=LucasdeCastro "Documentation") |
+| :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
