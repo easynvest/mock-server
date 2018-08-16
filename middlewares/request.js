@@ -11,7 +11,7 @@ const transformResponse = async request => {
   return request.json()
 }
 
-const getRequestBody = ({ body, contentType, req }) => {
+const getRequestBody = ({ body, contentType }) => {
   if (contentType.includes('json')) {
     return JSON.stringify(body)
   }
@@ -19,7 +19,7 @@ const getRequestBody = ({ body, contentType, req }) => {
   if (contentType.includes('x-www-form-urlencoded')) {
     const form = new url.URLSearchParams()
     Object.keys(body).forEach(key => {
-      form.append(key, req.body[key])
+      form.append(key, body[key])
     })
 
     return form
