@@ -1,130 +1,100 @@
+const uuid = require('uuid/v4')
+
 class Scenarios {
-  constructor(db, mockApplication) {
+  constructor(db, api) {
     this._ = db._
-    this.mockApplication = mockApplication
+    this.requests = api.onRequests
     this.scenarios = db.get('scenarios')
   }
 
-  allscenarios() {
+  all() {
     return this.scenarios.value()
   }
 
-  activeByName(name) {
-    const scenario = this.scenarios.find({ active: true })
+  getById(id) {
+    return this.scenarios.getById(id)
+  }
 
-    if (scenario.size().value() === 0) {
-      return
-    }
-
-    const scenarioRequests = scenario.value().requests
-
-    this._.each(scenarioRequests, request => {
-      request.status = 0
-    })
-
-    scenario
-      .set('active', false)
-      .set('requests', scenarioRequests)
-      .write()
-
-    this.scenarios
-      .find({ name })
-      .assign({ active: true })
-      .write()
+  getBy(props) {
+    return this.scenarios.find(props).value()
   }
 
   active(id) {
-    const scenario = this.scenarios.find({ active: true })
-
-    if (scenario.size().value() === 0) {
-      return
-    }
-
-    const scenarioRequests = scenario.value().requests
-
-    this._.each(scenarioRequests, request => {
-      request.status = 0
-    })
-
-    scenario
-      .set('active', false)
-      .set('requests', scenarioRequests)
+    this.getById(id)
+      .assign({ active: true, index: 0 })
       .write()
+  }
 
-    this.scenarios
-      .getById(id)
-      .assign({ active: true })
+  disable(id) {
+    this.getById(id)
+      .assign({ active: false, index: 0 })
       .write()
+  }
+
+  getActiveByRequest(props) {
+    const scenarios = this.all()
+
+    return scenarios.reduce((acc, item) => {
+      const hasEqualRequest = item.requests.find(
+        ({ method, url }) => props.method === method && props.url === url,
+      )
+
+      if (item.active && hasEqualRequest) return item
+      return acc
+    }, undefined)
   }
 
   getNextRequest({ method, url }) {
-    const { _ } = this
+    const scenario = this.getActiveByRequest({ method, url })
 
-    const scenario = this.scenarios.find({ active: true })
+    if (scenario) {
+      if (scenario.requests.length > scenario.index) {
+        const request = scenario.requests[scenario.index]
 
-    if (scenario.size().value() === 0) {
-      return undefined
+        this.getById(scenario.id)
+          .assign({ index: scenario.index + 1 })
+          .write()
+        return request
+      }
+
+      this.disable(scenario.id)
     }
-
-    const scenarioRequests = scenario.value().requests
-
-    const verifyRequestActive = _.first(_.orderBy(_.uniq(_.map(scenarioRequests, 'status')))) === 0
-
-    if (!verifyRequestActive) {
-      _.each(scenarioRequests, request => {
-        request.status = 0
-      })
-
-      scenario
-        .set('active', false)
-        .set('requests', scenarioRequests)
-        .write()
-
-      return undefined
-    }
-
-    const nextScenarioRequest = _.find(scenarioRequests, { method, url, status: 0 })
-
-    if (!nextScenarioRequest) {
-      return undefined
-    }
-
-    const newRequestId = nextScenarioRequest.requestId
-
-    nextScenarioRequest.status = 1
-
-    const request = this.mockApplication.onRequests.getById(newRequestId)
-
-    request.set({ requests: scenarioRequests }).write()
-
-    return request.value()
+    return undefined
   }
 
-  create({ name, active = false, requests = [] }) {
-    const scenario = this.scenarios
-      .pushIfNotExists({ name, active, requests }, ['name', 'active', 'requests'])
+  create(scenario) {
+    const data = {
+      index: 0,
+      active: false,
+      ...scenario,
+      requests: scenario.requests.map(request => ({ id: uuid(), ...request })),
+    }
+
+    return this.scenarios
+      .pushIfNotExists(data, ['active', 'requests', 'index', 'description'])
       .write()
-
-    return scenario
   }
 
-  addRequest({
-    id, url, method, requestId,
-  }) {
-    const newRequest = {
-      url,
-      requestId,
-      method: method.toUpperCase(),
-      status: 0,
-    }
+  update(id, props) {
+    this.scenarios
+      .getById(id)
+      .assign(props)
+      .write()
+  }
 
-    const scenario = this.scenarios.getById(id)
-    const requestsList = scenario.value().requests
-    requestsList.push(newRequest)
+  addRequest(id, request) {
+    const scenario = this.getById(id)
+    const value = scenario.value()
+    const data = { id: uuid(), ...request }
+    const requests = value.requests.concat(data)
 
-    scenario.set('requests', requestsList).write()
+    scenario.assign({ requests }).write()
+    return data
+  }
 
-    return scenario.value()
+  remove(id) {
+    const scenario = this.scenarios.value().find(item => item.id === id)
+    this.scenarios.remove(scenario).write()
   }
 }
 
