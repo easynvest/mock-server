@@ -33,6 +33,15 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "iamtchelo",
+      "name": "Marcelo Silva",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/3528126?v=4",
+      "profile": "https://github.com/iamtchelo",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
