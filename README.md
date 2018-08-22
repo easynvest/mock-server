@@ -1,144 +1,72 @@
 # Mock Server
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
-> Caso tenha a necessidade de fazer mock de api com a possibilidade de criar diversos cenários
 
-O Mock Server pode ser usado para mockar qualquer sistema que você integre via HTTP ou HTTPS (ou seja, serviços, sites, etc).
+Mock Server is an application that allows the mocking of requests served over HTTP or HTTPS, it also enables the creation of different response scenarios for those requests.
 
-Quando o Mock Server recebe um pedido, ele corresponde ao pedido em relação às expectativas ativas que foram configuradas.
+In addition to other cases, this is quite useful in situations where in order to get you work done you need to use an API that is not completely finished. On these occasions, Mock Server will help you simulate this API's endpoints and finish your work without delays.
 
-O proxy do Mock Server pode ser usado para registrar de forma transparente todas as solicitações enviadas por um sistema (por exemplo, um aplicativo ou conjunto de aplicativos).
+## Installation
 
-O Mock Server permite que você mexa com qualquer servidor ou serviço ao qual você se conecta por meio de HTTP ou HTTPS, como um serviço REST ou RPC.
-
-## Desenvolvido
-
-Este projeto foi construído com Node, Express, Lowdb e mais algumas bibliotecas segue a lista abaixo:
-
- * body-parser
- * chalk
- * commander
- * cookie-parser
- * debug
- * express
- * form-data
- * fs-extra
- * inquirer
- * lodash-id
- * lowdb
- * morgan
- * node-fetch
- * serve-favicon
- * url
-
-### Pré requisitos
-
- * Instalação de Nodejs
- * Instalar o pacote no seu projeto conforme abaixo:
-
-```bash
-$ npm install @easynvest/mock-server
+With NPM:
+```sh
+$ npm install @easynvest/mock-server --save-dev
 ```
 
-### Configuração
+With Yarn:
+```sh
+$ yarn add @easynvest/mock-server --dev
+```
 
- * Para inicializar as configurações do mock-server é recomendado executar os seguintes comandos abaixo:
-
-```bash
+## Configuration
+Configure Mock Server with the command bellow:
+```sh
 $ mock-server init
 ```
-
-```bash
-# Run
+Start the server:
+```sh
 $ mock-server start
 ```
-
-### CLI - Help
-
- * Para mais informações sobre as opções de comando ou parâmetros, digite o comando abaixo:
-
-```bash
-mock-server --help
+For more information about the CLI:
+```sh
+$ mock-server --help
 ```
+## Features
 
-Exemplo de output:
-
-```
-  Usage: mock-server [options] [command]
-
-
-  Options:
-
-    -V, --version  output the version number
-    --cache-only   Inicia mock sem fazer proxy para api
-    -h, --help     output usage information
-
-
-  Commands:
-
-    init|i   Generate a mock config
-    start|s  Inicia mock-server
-```
-
-
-## Versionamento
-
- * [SemVer](http://semver.org/) para versionamento.
-
-## Referências de API
-
+### Cache
+When this feature is enabled, Mock Server will not dispatch requests to the configured endpoint, tha is, it will immediately return the last retrieved value from the requested endpoint. In other words, Mock Server will be in offline mode.
+### Scenarios
+//TODO
+### Endpoints
 > `GET      /	                `
-
-* Retorna instruções de inicialização
-
+* Returns the configuration setup
 > `GET      /request-api      `
-
-* Retorna requests locais do db.json
-
+* Toggle the cache feature
 > `GET      /requests         `
-
-* Retorna as requests existentes no db.json
-
-> `POST      /requests         `
-
+* Returns all the mocked requests
+> `POST     /requests         `
+* Adds a new request
 ```
 {
-    "type": custom | default , 
+    "type": custom | default ,
     "method": [POST, GET, PUT, DELETE, PATCH, HEAD],
     "url": Path,
     "status": HTTP status,
     "response": Resposta da requisição,
-    "query": Parâmetros de URL 
+    "query": Parâmetros de URL
   }
-
 ```
-
-
-* Adiciona nova request no db.json
-
 > `GET      /requests/:id`
-
-* Retorna a request correspondente ao id
-
+* Returns the mocked request metada with the specified ID
 > `PUT      /requests/:id`
+* Updates the mocked request metada with the specified ID
+> `DELETE   /requests/:id`
+* Remove the mocked request metada with the specified ID
+> `GET      /scenarios`
+* Returns the existing scenarios
 
-* Atualiza a request correspondente ao id
-
-> `DELETE      /requests/:id`
-
-* Remove a request correspondente ao id
-
-> `GET      /scenarios        `
-
-* Retorna as cenários existentes no db.json
-
-## Contributors
-
-Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-| [<img src="https://avatars0.githubusercontent.com/u/806519?s=400&v=4" width="100px;"/><br /><sub><b>Guilherme Mangabeira Gregio</b></sub>](https://github.com/guilhermegregio)<br />[💻](https://github.com/guilhermegregio/mock-sever/commits?author=guilhermegregio "Code") [📖](https://github.com/guilhermegregio/mock-sever/commits?author=guilhermegregio "Documentation") [⚠️](https://github.com/guilhermegregio/mock-sever/commits?author=guilhermegregio "Tests") | [<img src="https://avatars1.githubusercontent.com/u/7875365?v=4" width="100px;"/><br /><sub><b>Lucas de Castro</b></sub>](https://github.com/LucasdeCastro)<br />[💻](https://github.com/guilhermegregio/mock-sever/commits?author=LucasdeCastro "Code") [📖](https://github.com/guilhermegregio/mock-sever/commits?author=LucasdeCastro "Documentation") [⚠️](https://github.com/guilhermegregio/mock-sever/commits?author=LucasdeCastro "Tests") |
-| :---: | :---: |
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
+## Documentação
+//TODO
+## Exemplos de uso
+//TODO
+## Contribuindo
+The main goal of this repository is evolve Mock Server so it can increasingly contribute with the agility and praticity in the software development, therefore any kind of contribution is welcome. If you wish join this purpose read our [Getting Started Guide](../contributing/GETTING_STARTED.md) to learn more.
