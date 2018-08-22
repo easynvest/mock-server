@@ -1,9 +1,9 @@
 const delay = require('./delay')
 const findDB = require('./findDB')
 const cached = require('./cached')
-const request = require('./request')
 const save = require('./save')
 const response = require('./response')
+const { request } = require('./request')
 
 module.exports = ({ server, services }) => {
   server.use('/proxy', findDB({ server, services }))
