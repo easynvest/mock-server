@@ -52,7 +52,8 @@
     "morgan": "~1.9.0",
     "node-fetch": "^1.7.3",
     "serve-favicon": "~2.4.5",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "all-contributors-cli": "^5.3.0",
