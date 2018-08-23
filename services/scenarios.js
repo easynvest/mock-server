@@ -50,11 +50,14 @@ class Scenarios {
     if (scenario) {
       if (scenario.requests.length > scenario.index) {
         const request = scenario.requests[scenario.index]
+        if (request.url === url && request.method === method) {
+          this.getById(scenario.id)
+            .assign({ index: scenario.index + 1 })
+            .write()
+          return request
+        }
 
-        this.getById(scenario.id)
-          .assign({ index: scenario.index + 1 })
-          .write()
-        return request
+        return scenario.requests.find(req => req.url === url && req.method === method)
       }
 
       this.disable(scenario.id)

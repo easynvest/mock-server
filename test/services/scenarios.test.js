@@ -75,7 +75,7 @@ describe('Scenarios', () => {
     expect(services.onScenarios.getNextRequest({ method: 'GET', url: '/people/2' })).toBeUndefined()
   })
 
-  it('should getNextRequest scenario with active scenario', () => {
+  it('should getNextRequest scenario with active scenario in order', () => {
     const id = 1
     services.onScenarios.active(id)
 
@@ -85,6 +85,17 @@ describe('Scenarios', () => {
     expect(services.onScenarios.getNextRequest(request2)).toEqual(request2)
     expect(services.onScenarios.getNextRequest(request3)).toEqual(request3)
     expect(services.onScenarios.getNextRequest(request3)).toBeUndefined()
+  })
+
+  it('should getNextRequest scenario with active scenario without order', () => {
+    const id = 1
+    services.onScenarios.active(id)
+
+    const [request1, request2, request3] = MOCK_DATA.scenarios[1].requests
+
+    expect(services.onScenarios.getNextRequest(request3)).toEqual(request3)
+    expect(services.onScenarios.getNextRequest(request2)).toEqual(request2)
+    expect(services.onScenarios.getNextRequest(request1)).toEqual(request1)
   })
 
   it('should getActiveByRequest scenario with active scenario', () => {
