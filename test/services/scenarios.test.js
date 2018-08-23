@@ -64,7 +64,7 @@ describe('Scenarios', () => {
   })
 
   it('should active scenario', () => {
-    services.onScenarios.active(1)
+    services.onScenarios.enable(1)
     const scenario = services.onScenarios.getById(1)
     expect(scenario.value()).toEqual({ ...MOCK_DATA.scenarios[1], active: true, index: 0 })
   })
@@ -77,7 +77,7 @@ describe('Scenarios', () => {
 
   it('should getNextRequest scenario with active scenario in order', () => {
     const id = 1
-    services.onScenarios.active(id)
+    services.onScenarios.enable(id)
 
     const [request1, request2, request3] = MOCK_DATA.scenarios[1].requests
 
@@ -89,7 +89,7 @@ describe('Scenarios', () => {
 
   it('should getNextRequest scenario with active scenario without order', () => {
     const id = 1
-    services.onScenarios.active(id)
+    services.onScenarios.enable(id)
 
     const [request1, request2, request3] = MOCK_DATA.scenarios[1].requests
 
@@ -100,7 +100,7 @@ describe('Scenarios', () => {
 
   it('should getActiveByRequest scenario with active scenario', () => {
     const id = 1
-    services.onScenarios.active(id)
+    services.onScenarios.enable(id)
     const scenario = services.onScenarios.getById(id).value()
     const [request1] = MOCK_DATA.scenarios[1].requests
 

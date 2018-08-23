@@ -234,7 +234,7 @@ describe('/scenarios', () => {
 
     const { id } = scenarios.body.pop()
     const response = await request(app)
-      .get(`/scenarios/${id}/active`)
+      .get(`/scenarios/${id}/enable`)
       .send()
 
     expect(response.status).toBe(200)

@@ -21,7 +21,7 @@ module.exports = (server, services, router) => {
   })
 
   router.get('/scenarios/:id/enable', (req, res) => {
-    services.onScenarios.active(req.params.id)
+    services.onScenarios.enable(req.params.id)
     res.status(200).json()
   })
 

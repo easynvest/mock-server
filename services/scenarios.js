@@ -19,7 +19,7 @@ class Scenarios {
     return this.scenarios.find(props).value()
   }
 
-  active(id) {
+  enable(id) {
     this.getById(id)
       .assign({ active: true, index: 0 })
       .write()
