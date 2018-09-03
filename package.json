@@ -12,7 +12,7 @@
     "lint:fix": "eslint . --fix",
     "test": "jest",
     "test:watch": "npm run test -- --watch",
-    "codecov": "codecov",
+    "codecov": "CODECOV_TOKEN=$TRAVIS_CODECOV_TOKEN codecov",
     "coverage": "npm run test -- --no-cache --coverage",
     "prepush": "npm run lint",
     "contributors:add": "all-contributors add",
