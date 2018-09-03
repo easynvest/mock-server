@@ -6,4 +6,4 @@ cache:
     - node_modules
 
 scripts:
-  - CODECOV_TOKEN="$TRAVIS_CODECOV_TOKEN" npm run test && npm run codecov
+  - CODECOV_TOKEN="TRAVIS_CODECOV_TOKEN" npm run test && npm run codecov
