@@ -5,20 +5,21 @@
   },
   "overrides": [
     {
-      "files": [ "db/*.js", "middlewrares/*.js", "routes/*.js",
-        "services/*.js", "tests/*.js", "app.js", ".eslintrc.json" ],
-      "excludedFiles": ["coverage/"]
+      "files": [
+        "db/*.js",
+        "middlewrares/*.js",
+        "routes/*.js",
+        "services/*.js",
+        "tests/*.js",
+        "app.js",
+        ".eslintrc.json"
+      ],
+      "excludedFiles": "node_modules"
     }
   ],
   "rules": {
     "max-len": ["error", 100],
-    "semi": [
-      2,
-      "never"
-    ],
-    "arrow-parens": [
-      2,
-      "as-needed"
-    ]
+    "semi": [2, "never"],
+    "arrow-parens": [2, "as-needed"]
   }
 }

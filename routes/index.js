@@ -1,8 +1,11 @@
 const express = require('express')
+const requestsRoutes = require('./requests')
 
 const router = express.Router()
 
 const configureRoutes = ({ server, services }) => {
+  requestsRoutes(server, services, router)
+
   router.get('/', (req, res) => {
     res.status(200).send(`
   *************** MOCK SERVER CLI ***************
@@ -13,15 +16,6 @@ const configureRoutes = ({ server, services }) => {
   ** or
   ** $ mock-server --help
   *************** MOCK SERVER CLI ***************\n`)
-  })
-
-  router.get('/request-api', (req, res) => {
-    server.locals.requestApi = !server.locals.requestApi //eslint-disable-line
-    res.status(200).json(server.locals.requestApi)
-  })
-
-  router.get('/requests', (req, res) => {
-    res.status(200).json(services.onRequests.requests.value())
   })
 
   router.get('/scenarios', (req, res) => {

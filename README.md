@@ -1,4 +1,5 @@
 # Mock Server
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 > Caso tenha a necessidade de fazer mock de api com a possibilidade de criar diversos cenários
 
 O Mock Server pode ser usado para mockar qualquer sistema que você integre via HTTP ou HTTPS (ou seja, serviços, sites, etc).
@@ -97,6 +98,47 @@ Exemplo de output:
 
 * Retorna as requests existentes no db.json
 
+> `POST      /requests         `
+
+```
+{
+    "type": custom | default , 
+    "method": [POST, GET, PUT, DELETE, PATCH, HEAD],
+    "url": Path,
+    "status": HTTP status,
+    "response": Resposta da requisição,
+    "query": Parâmetros de URL 
+  }
+
+```
+
+
+* Adiciona nova request no db.json
+
+> `GET      /requests/:id`
+
+* Retorna a request correspondente ao id
+
+> `PUT      /requests/:id`
+
+* Atualiza a request correspondente ao id
+
+> `DELETE      /requests/:id`
+
+* Remove a request correspondente ao id
+
 > `GET      /scenarios        `
 
 * Retorna as cenários existentes no db.json
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+| [<img src="https://avatars0.githubusercontent.com/u/806519?s=400&v=4" width="100px;"/><br /><sub><b>Guilherme Mangabeira Gregio</b></sub>](https://github.com/guilhermegregio)<br />[💻](https://github.com/guilhermegregio/mock-sever/commits?author=guilhermegregio "Code") [📖](https://github.com/guilhermegregio/mock-sever/commits?author=guilhermegregio "Documentation") [⚠️](https://github.com/guilhermegregio/mock-sever/commits?author=guilhermegregio "Tests") | [<img src="https://avatars1.githubusercontent.com/u/7875365?v=4" width="100px;"/><br /><sub><b>Lucas de Castro</b></sub>](https://github.com/LucasdeCastro)<br />[💻](https://github.com/guilhermegregio/mock-sever/commits?author=LucasdeCastro "Code") [📖](https://github.com/guilhermegregio/mock-sever/commits?author=LucasdeCastro "Documentation") [⚠️](https://github.com/guilhermegregio/mock-sever/commits?author=LucasdeCastro "Tests") |
+| :---: | :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!

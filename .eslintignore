@@ -1,1 +1,3 @@
-coverage
+mock-server/
+mock-server.conf.*
+coverage/

@@ -11,7 +11,7 @@ const transformResponse = async request => {
   return request.json()
 }
 
-const getRequestBody = ({ body, contentType, req }) => {
+const getRequestBody = ({ body, contentType }) => {
   if (contentType.includes('json')) {
     return JSON.stringify(body)
   }
@@ -19,7 +19,7 @@ const getRequestBody = ({ body, contentType, req }) => {
   if (contentType.includes('x-www-form-urlencoded')) {
     const form = new url.URLSearchParams()
     Object.keys(body).forEach(key => {
-      form.append(key, req.body[key])
+      form.append(key, body[key])
     })
 
     return form
@@ -28,34 +28,40 @@ const getRequestBody = ({ body, contentType, req }) => {
   return null
 }
 
-module.exports = () => async (req, res, next) => {
-  debug('request')
-  const { uriApi: URI_API } = getConfig()
-  const {
-    body,
-    method,
-    originalUrl,
-    headers: { authorization, 'content-type': contentType = '' },
-  } = req
-
-  const parsedUrl = url.parse(originalUrl.replace(/^\/proxy/, ''))
-  const uri = `http://${URI_API}${parsedUrl.path}`
-
-  try {
-    const config = {
+module.exports = {
+  request: () => async (req, res, next) => {
+    debug('request')
+    const { uriApi: URI_API } = getConfig()
+    const {
+      body,
       method,
-      body: getRequestBody({ body, contentType }),
-      headers: {
-        authorization,
-        'content-type': contentType,
-      },
-    }
+      originalUrl,
+      headers: { authorization, 'content-type': contentType = '' },
+    } = req
 
-    const request = await fetch(uri, config)
-    const response = await transformResponse(request)
-    req.requestHttp = { request, response }
-  } catch (e) {
-    debug(e)
-  }
-  next()
+    const parsedUrl = url.parse(originalUrl.replace(/^\/proxy/, ''))
+    const uri = URI_API.includes('http')
+      ? `${URI_API}${parsedUrl.path}`
+      : `http://${URI_API}${parsedUrl.path}`
+
+    try {
+      const config = {
+        method,
+        body: getRequestBody({ body, contentType }),
+        headers: {
+          authorization,
+          'content-type': contentType,
+        },
+      }
+
+      const request = await fetch(uri, config)
+      const response = await transformResponse(request)
+      req.requestHttp = { request, response }
+    } catch (e) {
+      debug(e)
+    }
+    next()
+  },
+  transformResponse,
+  getRequestBody,
 }

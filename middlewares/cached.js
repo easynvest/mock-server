@@ -1,12 +1,11 @@
 const debug = require('debug')('mock-server:middleware:cached')
 const URL = require('url')
 
-const getLikeURL = (acc, char, key, currentUrl) => {
+const getLikeURL = (acc, char, key, url) => {
   const str = acc.str + char
-  const list = acc.list.filter(({ url }) => url.startsWith(str))
-  if (list.length === 0) {
-    if (currentUrl.length / 2 <= str.length) return acc
-    return { list: [], str }
+  const list = acc.list.filter(mock => mock.url.startsWith(str))
+  if (list.length === 0 && url.length / 2 <= str.length) {
+    return acc
   }
   return { list, str }
 }
@@ -24,12 +23,9 @@ module.exports = ({ server, services }) => async (req, res, next) => {
     }
 
     const { pathname } = URL.parse(req.url)
-    const barsNumber = pathname.split('/').length + 1
     const cached = services.onRequests.requests
       .value()
-      .filter(
-        request => request.method === req.method && request.url.split('/').length === barsNumber,
-      )
+      .filter(request => request.method === req.method)
 
     const like = Array.prototype.reduce.call(pathname, getLikeURL, { list: cached, str: '' })
     const likeSorted = like.list.sort((a, b) => {
