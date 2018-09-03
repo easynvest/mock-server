@@ -6,11 +6,7 @@ class Requests {
   }
 
   all() {
-    return this.requests
-      .map(i => `${i.method} -> ${i.url}`)
-      .sortBy('url')
-      .uniq()
-      .value()
+    return this.requests.value()
   }
 
   getById(id) {
@@ -58,29 +54,28 @@ class Requests {
   saveIfHasDiff(mockRequest = {}, request) {
     const { _ } = this
     const attrsCompare = ['method', 'url', 'status', 'query']
-    let newRequest
+
     if (_.isEqual(_.pick(mockRequest, attrsCompare), _.pick(request, attrsCompare))) {
       return
     }
 
     if (!_.isEmpty(mockRequest)) {
-      newRequest = { ...request, type: 'custom' }
+      this.create({ ...request, type: 'custom' })
     }
-
-    this.create(newRequest)
   }
 
-  defineDefaut(id) {
+  defineDefault(id) {
     const request = this.requests.getById(id)
+    if (request && request.value()) {
+      const { method, url } = request.value()
 
-    const { method, url } = request.value()
+      this.requests
+        .find({ type: 'default', method, url })
+        .assign({ type: 'custom' })
+        .write()
 
-    this.requests
-      .find({ type: 'default', method, url })
-      .assign({ type: 'custom' })
-      .write()
-
-    request.assign({ type: 'default' }).write()
+      request.assign({ type: 'default' }).write()
+    }
   }
 
   remove(id) {
