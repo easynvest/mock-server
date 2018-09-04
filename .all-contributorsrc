@@ -17,7 +17,10 @@
       "contributions": [
         "code",
         "doc",
-        "test"
+        "test",
+        "bug",
+        "example",
+        "tool"
       ]
     },
     {
@@ -25,6 +28,59 @@
       "name": "Lucas de Castro",
       "avatar_url": "https://avatars1.githubusercontent.com/u/7875365?v=4",
       "profile": "https://github.com/LucasdeCastro",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "iamtchelo",
+      "name": "Marcelo Silva",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/3528126?v=4",
+      "profile": "https://github.com/iamtchelo",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "brunobc182",
+      "name": "Bruno Braga Chagas",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/11283132?v=4",
+      "profile": "https://github.com/brunobc182",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "rafaellucio",
+      "name": "Rafael Lucio",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2213926?v=4",
+      "profile": "https://github.com/rafaellucio",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "sampaiojulio",
+      "name": "sampaiojulio",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/25637978?v=4",
+      "profile": "https://github.com/sampaiojulio",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "wellyal",
+      "name": "Wellyngton Amaral Leitão",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/3047016?v=4",
+      "profile": "http://www.wellyngton.com/",
       "contributions": [
         "code",
         "doc",
