@@ -1,6 +1,5 @@
 const url = require('url')
 const request = require('supertest')
-
 const configureApp = require('../../app')
 const { getRequestBody, transformResponse } = require('../../middlewares/request')
 
