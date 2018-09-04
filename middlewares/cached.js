@@ -12,9 +12,8 @@ const getLikeURL = (acc, char, key, url) => {
 
 module.exports = ({ server, services }) => async (req, res, next) => {
   debug('cached')
-  const { mockRequest } = req
-
   if (!server.locals.requestApi) {
+    const { mockRequest } = req
     if (mockRequest) {
       res.append('x-request-mock', 'true')
       res.status(mockRequest.status)

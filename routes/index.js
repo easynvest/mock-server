@@ -1,10 +1,12 @@
 const express = require('express')
 const requestsRoutes = require('./requests')
+const scenariosRoutes = require('./scenarios')
 
 const router = express.Router()
 
 const configureRoutes = ({ server, services }) => {
   requestsRoutes(server, services, router)
+  scenariosRoutes(server, services, router)
 
   router.get('/', (req, res) => {
     res.status(200).send(`
@@ -16,10 +18,6 @@ const configureRoutes = ({ server, services }) => {
   ** or
   ** $ mock-server --help
   *************** MOCK SERVER CLI ***************\n`)
-  })
-
-  router.get('/scenarios', (req, res) => {
-    res.status(200).json(services.onScenarios.scenarios.value())
   })
 
   return router
