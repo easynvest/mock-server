@@ -8,7 +8,7 @@ const resourcesPathLocal = path.join(process.cwd(), './mock-server')
 const configDB = (
   adapter = new FileSync(path.join(resourcesPathLocal, './db.json')),
   defaultData = { requests: [], scenarios: [] },
-  database = low
+  database = low,
 ) => {
   const db = database(adapter)
   addMixins(db)

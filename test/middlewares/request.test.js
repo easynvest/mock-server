@@ -7,7 +7,7 @@ const { getRequestBody, transformResponse } = require('../../middlewares/request
 const config = {
   port: '3001',
   uriApi: 'http://swapi.co/api',
-  rewriteRoutes: './mock-server/rewriteRoutes.js'
+  rewriteRoutes: './mock-server/rewriteRoutes.js',
 }
 
 describe('Request middleware', () => {
@@ -32,7 +32,7 @@ describe('Request middleware', () => {
   it('transformResponse with text/plain', async () => {
     const headers = {
       'content-type': 'text/plain',
-      get: key => headers[key]
+      get: key => headers[key],
     }
 
     const options = {
@@ -40,7 +40,7 @@ describe('Request middleware', () => {
       url: '/users/42',
       headers,
       body: 'options with text plain',
-      text: () => options.body
+      text: () => options.body,
     }
 
     const res = await transformResponse(options)
@@ -50,7 +50,7 @@ describe('Request middleware', () => {
   it('transformResponse with json', async () => {
     const headers = {
       'content-type': 'json',
-      get: key => headers[key]
+      get: key => headers[key],
     }
 
     const options = {
@@ -58,7 +58,7 @@ describe('Request middleware', () => {
       url: '/users/42',
       headers,
       body: { name: 'user', id: 10 },
-      json: () => options.body
+      json: () => options.body,
     }
 
     const res = await transformResponse(options)

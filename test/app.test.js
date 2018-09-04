@@ -1,11 +1,10 @@
 const request = require('supertest')
 const configureApp = require('../app')
-const db = require('lowdb')
 
 const config = {
   port: '3001',
   uriApi: 'swapi.co',
-  rewriteRoutes: './mock-server/rewriteRoutes.js'
+  rewriteRoutes: './mock-server/rewriteRoutes.js',
 }
 
 const CONTRACT = ['type', 'method', 'url', 'status', 'response', 'query', 'id']
@@ -15,7 +14,7 @@ const MOCK_CONTRACT = {
   url: 'swapi.co',
   status: 200,
   response: {},
-  query: {}
+  query: {},
 }
 
 const MOCK_SCENARIO = {
@@ -23,10 +22,10 @@ const MOCK_SCENARIO = {
   requests: [
     { method: 'GET', url: '/people/2' },
     { method: 'GET', url: '/people/1' },
-    { method: 'GET', url: '/people/3' }
+    { method: 'GET', url: '/people/3' },
   ],
   active: false,
-  description: ''
+  description: '',
 }
 
 const app = configureApp(config, false, false)
