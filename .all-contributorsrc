@@ -53,6 +53,17 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "rafaellucio",
+      "name": "Rafael Lucio",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2213926?v=4",
+      "profile": "https://github.com/rafaellucio",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ]
 }
