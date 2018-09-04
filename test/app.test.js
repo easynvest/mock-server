@@ -31,9 +31,20 @@ const MOCK_SCENARIO = {
 const app = configureApp(config, false, false)
 const validContract = (fields, body) => fields.every(field => field in body)
 
-describe('GET /', () => {
+describe('Test start app', () => {
   it('Try get mock-server info', async () => {
     const response = await request(app).get('/')
+    expect(response.statusCode).toBe(200)
+  })
+
+  it('Try get mock-server to not found', async () => {
+    const response = await request(app).get('/anything')
+    expect(response.statusCode).toBe(404)
+  })
+
+  it('Try get mock-server with log', async () => {
+    const mock = configureApp(config, false, true)
+    const response = await request(mock).get('/')
     expect(response.statusCode).toBe(200)
   })
 })
