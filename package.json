@@ -10,7 +10,7 @@
     "start": "node bin/cli.js start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "jest",
+    "test": "jest --env=node",
     "coverage": "npm run test -- --no-cache --coverage",
     "prepush": "npm run lint",
     "contributors:add": "all-contributors add",
@@ -23,7 +23,19 @@
     "mock-api"
   ],
   "jest": {
-    "testEnvironment": "node"
+    "collectCoverageFrom": [
+      "*/**/*.js",
+      "!**/coverage/**",
+      "!**/(*.spec).js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    }
   },
   "homepage": "https://github.com/easynvest/mock-server#readme",
   "repository": {
@@ -64,20 +76,5 @@
     "jest": "^23.3.0",
     "node-mocks-http": "^1.7.0",
     "supertest": "^3.1.0"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "*/**/*.js",
-      "!**/coverage/**",
-      "!**/(*.spec).js"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 0,
-        "functions": 0,
-        "lines": 0,
-        "statements": 0
-      }
-    }
   }
 }
