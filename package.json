@@ -27,9 +27,6 @@
     "mock-api"
   ],
   "jest": {
-    "setupFiles": [
-      "./test/setup.js"
-    ],
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
     "collectCoverageFrom": [
