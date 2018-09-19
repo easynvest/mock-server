@@ -1,6 +1,6 @@
 {
   "name": "@easynvest/mock-server",
-  "version": "0.6.0",
+  "version": "0.6.3",
   "description": "",
   "main": "index.js",
   "license": "Apache-2.0",

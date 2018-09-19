@@ -5,24 +5,26 @@ const { getConfig } = require('../config')
 
 const transformResponse = async request => {
   const contentType = request.headers.get('content-type')
-  if (contentType.includes('text/plain')) {
-    return request.text()
+  if (contentType && contentType.includes('json')) {
+    return request.json()
   }
-  return request.json()
+  return request.text()
 }
 
 const getRequestBody = ({ body, contentType }) => {
-  if (contentType.includes('json')) {
-    return JSON.stringify(body)
-  }
+  if (contentType) {
+    if (contentType.includes('json')) {
+      return JSON.stringify(body)
+    }
 
-  if (contentType.includes('x-www-form-urlencoded')) {
-    const form = new url.URLSearchParams()
-    Object.keys(body).forEach(key => {
-      form.append(key, body[key])
-    })
+    if (contentType.includes('x-www-form-urlencoded')) {
+      const form = new url.URLSearchParams()
+      Object.keys(body).forEach(key => {
+        form.append(key, body[key])
+      })
 
-    return form
+      return form
+    }
   }
 
   return null
