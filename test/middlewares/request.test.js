@@ -82,4 +82,10 @@ describe('Request middleware', () => {
     expect(response.status).toBe(200)
     expect(response.body).toEqual({})
   })
+
+  it('returns text when no contentType header is found', () => {
+    const mockRequest = { body: 'test' }
+    const response = getRequestBody(mockRequest)
+    expect(response).toEqual('test')
+  })
 })
