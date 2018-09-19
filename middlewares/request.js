@@ -5,10 +5,15 @@ const { getConfig } = require('../config')
 
 const transformResponse = async request => {
   const contentType = request.headers.get('content-type')
-  if (contentType.includes('text/plain')) {
-    return request.text()
+  
+  if (contentType) {
+    if (contentType.includes('text/plain')) {
+      return request.text()
+    }
+    return request.json()
   }
-  return request.json()
+  
+  return request.text()
 }
 
 const getRequestBody = ({ body, contentType }) => {
