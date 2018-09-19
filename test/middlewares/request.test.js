@@ -82,6 +82,13 @@ describe('Request middleware', () => {
     expect(response.status).toBe(404)
   })
 
+  it('test default response on error', async () => {
+    const app = configureApp({ ...config, uriApi: 'xpto' }, false, false)
+    const response = await request(app).get('/proxy/peoples/1')
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual({})
+  })
+
   it('returns text when no contentType header is found', async () => {
     const headers = {
       get: key => headers[key],
