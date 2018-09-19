@@ -83,9 +83,20 @@ describe('Request middleware', () => {
     expect(response.body).toEqual({})
   })
 
-  it('returns text when no contentType header is found', () => {
-    const mockRequest = { body: 'test' }
-    const response = getRequestBody(mockRequest)
-    expect(response).toEqual('test')
+  it('returns text when no contentType header is found', async () => {
+    const headers = {
+      get: key => headers[key],
+    }
+
+    const options = {
+      method: 'POST',
+      url: '/users/42',
+      headers,
+      body: 'options with text plain',
+      text: () => options.body,
+    }
+
+    const res = await transformResponse(options)
+    expect(res).toBe(options.body)
   })
 })
