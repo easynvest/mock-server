@@ -79,8 +79,7 @@ describe('Request middleware', () => {
   it('test middleware with not found', async () => {
     const app = configureApp({ ...config, uriApi: 'swapi.co/api' }, false, false)
     const response = await request(app).get('/proxy/peoples/1')
-    expect(response.status).toBe(200)
-    expect(response.body).toEqual({})
+    expect(response.status).toBe(404)
   })
 
   it('returns text when no contentType header is found', async () => {
